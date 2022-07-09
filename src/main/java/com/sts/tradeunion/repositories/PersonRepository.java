@@ -1,4 +1,4 @@
-package com.sts.tradeunion.repositories.people;
+package com.sts.tradeunion.repositories;
 
 import com.sts.tradeunion.entities.PersonEntity;
 import org.springframework.data.domain.Page;

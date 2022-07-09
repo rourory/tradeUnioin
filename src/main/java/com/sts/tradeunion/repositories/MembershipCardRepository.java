@@ -1,4 +1,4 @@
-package com.sts.tradeunion.repositories.membershipCard;
+package com.sts.tradeunion.repositories;
 
 import com.sts.tradeunion.entities.PersonEntity;
 import com.sts.tradeunion.entities.docs.MembershipCardEntity;

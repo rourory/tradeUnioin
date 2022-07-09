@@ -1,30 +1,30 @@
 package com.sts.tradeunion.entities.docs;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sts.tradeunion.entities.сlassification.TradeUnionClassification;
 import com.sts.tradeunion.entities.PersonEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "doc_payment")
-public class PaymentEntity {
+public class PaymentEntity{
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     @Column(name = "created")
-    private Date created;
+    private LocalDateTime created;
 
     @Column(name = "finished")
     private Date finished;
@@ -33,12 +33,23 @@ public class PaymentEntity {
     @JoinColumn(name = "org_id", referencedColumnName = "id")
     private TradeUnionClassification tradeUnion;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonSerialize(typing = JsonSerialize.Typing.STATIC)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity owner;
 
     @Column(name = "updated")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updated;
+    private LocalDateTime updated;
 
+    @Override
+    public String toString() {
+        return "PaymentEntity{" +
+                "id=" + id +
+                ", created=" + created +
+                ", finished=" + finished +
+                ", tradeUnion=" + tradeUnion +
+                ", updated=" + updated +
+                '}';
+    }
 }

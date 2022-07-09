@@ -1,29 +1,31 @@
 package com.sts.tradeunion.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sts.tradeunion.entities.docs.LaborContractEntity;
 import com.sts.tradeunion.entities.docs.MembershipCardEntity;
 import com.sts.tradeunion.entities.docs.PaymentEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "person")
-public class PersonEntity {
+public class PersonEntity{
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "fn")
+    @Column(name = "ln")
     private String lastName;
 
     @Column(name = "fn")
@@ -33,6 +35,7 @@ public class PersonEntity {
     private String middleName;
 
     @Column (name = "birth")
+    @Temporal(TemporalType.DATE)
     private Date birthDate;
 
     @Column(name = "address")
@@ -62,18 +65,39 @@ public class PersonEntity {
     @Column(name = "comment")
     private String comment;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated")
-    private Date updated;
+    private LocalDateTime updated;
 
     @OneToMany(mappedBy = "owner")
+    @JsonIgnore
     private List<MembershipCardEntity> membershipCards;
 
     @OneToMany(mappedBy = "owner")
+    @JsonIgnore
     private List<PaymentEntity> payments;
 
     @OneToMany(mappedBy = "owner")
+    @JsonIgnore
     private List<LaborContractEntity> contracts;
 
-
+    @Override
+    public String toString() {
+        return "PersonEntity{" +
+                "id=" + id +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", birthDate=" + birthDate +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", birthPlace='" + birthPlace + '\'' +
+                ", livePlace='" + livePlace + '\'' +
+                ", regPlace='" + regPlace + '\'' +
+                ", maritalState=" + maritalState +
+                ", citizenship='" + citizenship + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", comment='" + comment + '\'' +
+                ", updated=" + updated +
+                '}';
+    }
 }

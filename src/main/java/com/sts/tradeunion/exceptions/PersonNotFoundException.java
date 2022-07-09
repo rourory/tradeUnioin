@@ -1,4 +1,4 @@
-package com.sts.spring.firstRESTapp.util;
+package com.sts.tradeunion.exceptions;
 
 public class PersonNotFoundException extends RuntimeException{
 }
