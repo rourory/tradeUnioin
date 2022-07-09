@@ -20,6 +20,7 @@ public class PeopleController {
 
     private final PersonService personService;
     private final ModelMapper modelMapper;
+
     @Autowired
     public PeopleController(PersonService personService, ModelMapper modelMapper) {
         this.personService = personService;
@@ -29,34 +30,33 @@ public class PeopleController {
     //Get list with all person
     @GetMapping
     public List<PersonDTO> getPeople(@RequestParam("page") int page) {
-        List<PersonDTO> people= new ArrayList<>();
-        if(page>0)
-        personService.getAllPeople(page -1 ).stream().forEach(person -> people.add(modelMapper.map(person,PersonDTO.class)));
+        List<PersonDTO> people = new ArrayList<>();
+        if (page > 0)
+            personService.getAllPeople(page - 1).stream().forEach(person -> people.add(modelMapper.map(person, PersonDTO.class)));
         return people;
     }
 
     //Get person with definite id
     @GetMapping("/{id}")
     public PersonDTO getPerson(@PathVariable int id) {
-        return modelMapper.map(personService.getPerson(id),PersonDTO.class);
+        return modelMapper.map(personService.getPerson(id), PersonDTO.class);
     }
 
     //Create new person
     @PostMapping
     public ResponseEntity<PersonDTO> createPerson(@RequestBody PersonDTO personDTO) {
-        return new ResponseEntity<>(modelMapper.map(personService.save(modelMapper.map(personDTO, PersonEntity.class)),PersonDTO.class),HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(personService.save(modelMapper.map(personDTO, PersonEntity.class)), PersonDTO.class), HttpStatus.OK);
     }
 
     //Update definite person
     @PutMapping
-    public ResponseEntity<HttpStatus> updatePerson(@RequestBody PersonDTO personDTO) {
-        personService.save(modelMapper.map(personDTO, PersonEntity.class));
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<PersonDTO> updatePerson(@RequestBody PersonDTO personDTO) {
+        return new ResponseEntity<>(modelMapper.map(personService.save(modelMapper.map(personDTO, PersonEntity.class)), PersonDTO.class), HttpStatus.OK);
     }
 
     //Delete definite person
     @DeleteMapping
-    public ResponseEntity<HttpStatus> deletePerson(@RequestParam("id") int id){
+    public ResponseEntity<HttpStatus> deletePerson(@RequestParam("id") int id) {
         personService.deletePerson(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

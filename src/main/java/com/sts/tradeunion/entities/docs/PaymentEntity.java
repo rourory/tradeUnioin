@@ -2,12 +2,11 @@ package com.sts.tradeunion.entities.docs;
 
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sts.tradeunion.entities.сlassification.TradeUnionClassification;
+import com.sts.tradeunion.entities.сlassification.TradeUnionClassificationEntity;
 import com.sts.tradeunion.entities.PersonEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -30,8 +29,9 @@ public class PaymentEntity{
     private Date finished;
 
     @OneToOne
+    @JsonSerialize(typing = JsonSerialize.Typing.STATIC)
     @JoinColumn(name = "org_id", referencedColumnName = "id")
-    private TradeUnionClassification tradeUnion;
+    private TradeUnionClassificationEntity tradeUnion;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonSerialize(typing = JsonSerialize.Typing.STATIC)
@@ -39,7 +39,6 @@ public class PaymentEntity{
     private PersonEntity owner;
 
     @Column(name = "updated")
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updated;
 
     @Override

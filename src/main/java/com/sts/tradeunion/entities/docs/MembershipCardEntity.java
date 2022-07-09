@@ -1,12 +1,17 @@
 package com.sts.tradeunion.entities.docs;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sts.tradeunion.entities.сlassification.TradeUnionClassification;
+import com.sts.tradeunion.entities.сlassification.TradeUnionClassificationEntity;
 import com.sts.tradeunion.entities.PersonEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.beans.BeanProperty;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -25,7 +30,7 @@ public class MembershipCardEntity{
     private int cardNumber;
 
     @Column(name = "created")
-    private Date created;
+    private LocalDateTime created;
 
     @Column(name = "completed")
     private Date completed;
@@ -34,17 +39,17 @@ public class MembershipCardEntity{
     private Date finished;
 
     @ManyToOne
+    @JsonSerialize(typing = JsonSerialize.Typing.STATIC)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity owner;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JsonSerialize(typing = JsonSerialize.Typing.STATIC)
     @JoinColumn(name = "org_id", referencedColumnName = "id")
-    private TradeUnionClassification tradeUnion;
+    private TradeUnionClassificationEntity tradeUnion;
 
     @Column(name = "updated")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updated;
+    private LocalDateTime updated;
 
     @Override
     public String toString() {
@@ -54,7 +59,7 @@ public class MembershipCardEntity{
                 ", created=" + created +
                 ", completed=" + completed +
                 ", finished=" + finished +
-                ", tradeUnion=" + tradeUnion +
+//                ", tradeUnion=" + tradeUnion +
                 ", updated=" + updated +
                 '}';
     }

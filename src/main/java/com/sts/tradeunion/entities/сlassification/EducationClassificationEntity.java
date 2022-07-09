@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -29,6 +30,5 @@ public class EducationClassificationEntity {
     private int charName;
 
     @Column(name = "updated")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updated;
+    private LocalDateTime updated;
 }

@@ -1,13 +1,13 @@
 package com.sts.tradeunion.dto;
 
 import com.sts.tradeunion.entities.PersonEntity;
-import com.sts.tradeunion.entities.сlassification.TradeUnionClassification;
+import com.sts.tradeunion.entities.сlassification.TradeUnionClassificationEntity;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class MembershipCardEntity {
+public class MembershipCardDTO {
 
     private int id;
 
@@ -19,5 +19,5 @@ public class MembershipCardEntity {
 
     private PersonEntity owner;
 
-    private TradeUnionClassification tradeUnion;
+    private TradeUnionClassificationEntity tradeUnion;
 }

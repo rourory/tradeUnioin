@@ -33,7 +33,6 @@ public class LaborContractEntity{
     @Column(name = "finished")
     private Date finished;
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated")
     private LocalDateTime updated;
 

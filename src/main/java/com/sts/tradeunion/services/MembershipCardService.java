@@ -6,6 +6,8 @@ import com.sts.tradeunion.repositories.MembershipCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MembershipCardService {
 
@@ -16,9 +18,7 @@ public class MembershipCardService {
         this.membershipCardRepository = membershipCardRepository;
     }
 
-    public MembershipCardEntity getMembershipCardByOwnerId(int id){
-        PersonEntity person = new PersonEntity();
-        person.setId(id);
-        return membershipCardRepository.getMembershipCardEntityByOwner(person);
+    public List<MembershipCardEntity> findByOwnerId(int ownerId){
+        return membershipCardRepository.getMembershipCardEntityByOwner(ownerId);
     }
 }

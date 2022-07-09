@@ -3,6 +3,8 @@ package com.sts.tradeunion.entities.сlassification;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -10,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "class_org")
-public class TradeUnionClassification {
+public class TradeUnionClassificationEntity{
 
     @Id
     @Column(name = "id")
@@ -27,6 +29,5 @@ public class TradeUnionClassification {
     private String address;
 
     @Column(name = "updated")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updated;
+    private LocalDateTime updated;
 }
