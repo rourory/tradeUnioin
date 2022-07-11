@@ -49,5 +49,4 @@ public class MembershipCardController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
 }

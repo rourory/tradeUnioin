@@ -23,9 +23,11 @@ public class PaymentEntity{
     private int id;
 
     @Column(name = "created")
-    private LocalDateTime created;
+    @Temporal(TemporalType.DATE)
+    private Date created;
 
     @Column(name = "finished")
+    @Temporal(TemporalType.DATE)
     private Date finished;
 
     @Column(name = "org_id")

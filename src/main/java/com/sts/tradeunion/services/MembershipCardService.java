@@ -26,7 +26,6 @@ public class MembershipCardService {
     }
 
     public List<MembershipCardEntity> findByOwnerId(int ownerId) {
-        List<MembershipCardEntity> m = membershipCardRepository.getMembershipCardEntityByOwner(ownerId);
         return membershipCardRepository.getMembershipCardEntityByOwner(ownerId);
     }
 
