@@ -1,6 +1,5 @@
 package com.sts.tradeunion.dto;
 
-import com.sts.tradeunion.entities.PersonEntity;
 import com.sts.tradeunion.entities.сlassification.TradeUnionClassificationEntity;
 import lombok.Data;
 
@@ -17,7 +16,7 @@ public class MembershipCardDTO {
 
     private Date finished;
 
-    private PersonEntity owner;
+    private PersonDTO owner;
 
-    private TradeUnionClassificationEntity tradeUnion;
+    private int tradeUnionId;
 }

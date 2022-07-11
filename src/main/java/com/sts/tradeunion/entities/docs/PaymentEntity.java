@@ -28,10 +28,8 @@ public class PaymentEntity{
     @Column(name = "finished")
     private Date finished;
 
-    @OneToOne
-    @JsonSerialize(typing = JsonSerialize.Typing.STATIC)
-    @JoinColumn(name = "org_id", referencedColumnName = "id")
-    private TradeUnionClassificationEntity tradeUnion;
+    @Column(name = "org_id")
+    private int tradeUnionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonSerialize(typing = JsonSerialize.Typing.STATIC)
@@ -47,7 +45,7 @@ public class PaymentEntity{
                 "id=" + id +
                 ", created=" + created +
                 ", finished=" + finished +
-                ", tradeUnion=" + tradeUnion +
+                ", tradeUnion=" + tradeUnionId +
                 ", updated=" + updated +
                 '}';
     }

@@ -16,5 +16,5 @@ public class LaborContractDTO {
 
     private Date finished;
 
-    private PersonEntity owner;
+    private PersonDTO owner;
 }

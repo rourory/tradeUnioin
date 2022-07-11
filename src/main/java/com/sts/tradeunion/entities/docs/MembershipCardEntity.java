@@ -30,11 +30,13 @@ public class MembershipCardEntity{
     private int cardNumber;
 
     @Column(name = "created")
-    private LocalDateTime created;
+    private Date created;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "completed")
     private Date completed;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "finished")
     private Date finished;
 
@@ -43,10 +45,8 @@ public class MembershipCardEntity{
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity owner;
 
-    @OneToOne
-    @JsonSerialize(typing = JsonSerialize.Typing.STATIC)
-    @JoinColumn(name = "org_id", referencedColumnName = "id")
-    private TradeUnionClassificationEntity tradeUnion;
+    @Column(name = "org_id")
+    private int tradeUnionId;
 
     @Column(name = "updated")
     private LocalDateTime updated;
@@ -59,7 +59,7 @@ public class MembershipCardEntity{
                 ", created=" + created +
                 ", completed=" + completed +
                 ", finished=" + finished +
-//                ", tradeUnion=" + tradeUnion +
+                ", tradeUnion=" + tradeUnionId +
                 ", updated=" + updated +
                 '}';
     }

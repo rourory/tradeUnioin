@@ -1,7 +1,5 @@
 package com.sts.tradeunion.dto;
 
-import com.sts.tradeunion.entities.PersonEntity;
-import com.sts.tradeunion.entities.сlassification.TradeUnionClassificationEntity;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,8 +11,8 @@ public class PaymentEntityDTO {
 
     private Date finished;
 
-    private TradeUnionClassificationEntity tradeUnion;
+    private int tradeUnionId;
 
-    private PersonEntity owner;
+    private PersonDTO owner;
 
 }
