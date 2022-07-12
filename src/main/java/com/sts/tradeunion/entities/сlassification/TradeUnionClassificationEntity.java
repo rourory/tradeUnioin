@@ -3,9 +3,7 @@ package com.sts.tradeunion.entities.сlassification;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter

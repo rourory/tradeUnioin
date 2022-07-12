@@ -1,11 +1,10 @@
 package com.sts.tradeunion.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sts.tradeunion.entities.PersonEntity;
+import lombok.Data;
 
-import javax.persistence.*;
 import java.util.Date;
 
+@Data
 public class LaborContractDTO {
 
     private int id;

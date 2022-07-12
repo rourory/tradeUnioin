@@ -1,14 +1,12 @@
 package com.sts.tradeunion.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sts.tradeunion.entities.docs.LaborContractEntity;
 import com.sts.tradeunion.entities.docs.MembershipCardEntity;
 import com.sts.tradeunion.entities.docs.PaymentEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;

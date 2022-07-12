@@ -26,7 +26,7 @@ public class MembershipCardController {
     @GetMapping
     public ResponseEntity<List<MembershipCardDTO>> getOwnersMembershipCards(@PathVariable int id){
         List<MembershipCardDTO> membershipCards = new ArrayList<>();
-        membershipCardService.findByOwnerId(id).stream()
+        membershipCardService.findByOwnerId(id)
                 .forEach(membershipCardEntity -> membershipCards.add(modelMapper.map(membershipCardEntity,MembershipCardDTO.class)));
         return new ResponseEntity<>(membershipCards, HttpStatus.OK);
     }
@@ -42,7 +42,7 @@ public class MembershipCardController {
     }
 
     @DeleteMapping
-    public ResponseEntity<HttpStatus> delete (@PathVariable(value = "id") int ownerId, @RequestParam("id") int id ){
+    public ResponseEntity<HttpStatus> delete (@PathVariable(value = "id") int ownerId, @RequestParam("cardId") int id ){
         membershipCardService.delete(ownerId, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

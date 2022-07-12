@@ -6,9 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
 public interface PersonRepository extends PagingAndSortingRepository<PersonEntity,Integer>{
-    public Page<PersonEntity> findByLastName(String lastName, Pageable pageable);
+    Page<PersonEntity> findByLastName(String lastName, Pageable pageable);
 }

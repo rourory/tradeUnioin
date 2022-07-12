@@ -5,7 +5,6 @@ import com.sts.tradeunion.entities.PersonEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -28,7 +27,7 @@ public class LaborContractEntity{
     private String post;
 
     @Column(name = "created")
-    private LocalDateTime created;
+    private Date created;
 
     @Column(name = "finished")
     private Date finished;

@@ -2,7 +2,6 @@ package com.sts.tradeunion.entities.docs;
 
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sts.tradeunion.entities.сlassification.TradeUnionClassificationEntity;
 import com.sts.tradeunion.entities.PersonEntity;
 import lombok.*;
 

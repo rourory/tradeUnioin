@@ -4,13 +4,10 @@ import com.sts.tradeunion.dto.PersonDTO;
 import com.sts.tradeunion.entities.PersonEntity;
 import com.sts.tradeunion.services.PersonService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +18,6 @@ public class PeopleController {
     private final PersonService personService;
     private final ModelMapper modelMapper;
 
-    @Autowired
     public PeopleController(PersonService personService, ModelMapper modelMapper) {
         this.personService = personService;
         this.modelMapper = modelMapper;
@@ -32,7 +28,7 @@ public class PeopleController {
     public List<PersonDTO> getPeople(@RequestParam("page") int page) {
         List<PersonDTO> people = new ArrayList<>();
         if (page > 0)
-            personService.getAllPeople(page - 1).stream().forEach(person -> people.add(modelMapper.map(person, PersonDTO.class)));
+            personService.getAllPeople(page - 1).forEach(person -> people.add(modelMapper.map(person, PersonDTO.class)));
         return people;
     }
 

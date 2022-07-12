@@ -44,7 +44,7 @@ public class PaymentController {
     }
 
     @DeleteMapping
-    public ResponseEntity<HttpStatus> delete (@PathVariable(value = "id") int ownerId, @RequestParam("id") int id ){
+    public ResponseEntity<HttpStatus> delete (@PathVariable(value = "id") int ownerId, @RequestParam("paymentId") int id ){
         paymentService.delete(ownerId, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

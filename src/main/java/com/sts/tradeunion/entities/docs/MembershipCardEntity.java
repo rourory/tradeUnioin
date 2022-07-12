@@ -1,16 +1,10 @@
 package com.sts.tradeunion.entities.docs;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sts.tradeunion.entities.сlassification.TradeUnionClassificationEntity;
 import com.sts.tradeunion.entities.PersonEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.beans.BeanProperty;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Date;
 

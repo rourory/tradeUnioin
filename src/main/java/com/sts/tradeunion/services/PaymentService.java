@@ -1,7 +1,6 @@
 package com.sts.tradeunion.services;
 
 import com.sts.tradeunion.entities.PersonEntity;
-import com.sts.tradeunion.entities.docs.MembershipCardEntity;
 import com.sts.tradeunion.entities.docs.PaymentEntity;
 import com.sts.tradeunion.repositories.PaymentRepository;
 import com.sts.tradeunion.repositories.PersonRepository;
@@ -26,7 +25,7 @@ public class PaymentService {
     }
 
     public List<PaymentEntity> findByOwnerId(int ownerId) {
-        return paymentRepository.getPaymentEntitiesByOwnerId(ownerId);
+        return paymentRepository.getPaymentsByOwnerId(ownerId);
     }
 
     @Transactional

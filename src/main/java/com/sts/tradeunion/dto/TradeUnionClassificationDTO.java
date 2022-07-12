@@ -1,5 +1,8 @@
 package com.sts.tradeunion.dto;
 
+import lombok.Data;
+
+@Data
 public class TradeUnionClassificationDTO {
 
     private int id;
