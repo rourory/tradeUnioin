@@ -32,15 +32,13 @@ public class MembershipCardController {
     }
 
     @PostMapping
-    public ResponseEntity<MembershipCardEntity> create (@PathVariable(value = "id") int personId, @RequestBody MembershipCardDTO membershipCard){
-        return new ResponseEntity<>(membershipCardService.save(modelMapper
-                .map(membershipCard,MembershipCardEntity.class), personId),HttpStatus.OK);
+    public ResponseEntity<MembershipCardDTO> create (@PathVariable(value = "id") int personId, @RequestBody MembershipCardDTO membershipCard){
+        return new ResponseEntity<>(modelMapper.map(membershipCardService.save(modelMapper.map(membershipCard,MembershipCardEntity.class), personId),MembershipCardDTO.class),HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<MembershipCardEntity> update (@PathVariable(value = "id") int personId, @RequestBody MembershipCardDTO membershipCard) {
-        return new ResponseEntity<>(membershipCardService.update(modelMapper
-                .map(membershipCard, MembershipCardEntity.class), personId), HttpStatus.OK);
+    public ResponseEntity<MembershipCardDTO> update (@PathVariable(value = "id") int personId, @RequestBody MembershipCardDTO membershipCard) {
+        return new ResponseEntity<>(modelMapper.map(membershipCardService.update(modelMapper.map(membershipCard, MembershipCardEntity.class), personId),MembershipCardDTO.class), HttpStatus.OK);
     }
 
     @DeleteMapping

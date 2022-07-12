@@ -2,10 +2,12 @@ package com.sts.tradeunion.dto;
 
 import lombok.Data;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 
 @Data
-public class PaymentEntityDTO {
+public class PaymentDTO {
 
     private int id;
 

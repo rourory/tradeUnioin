@@ -23,7 +23,6 @@ public class PaymentEntity{
     private int id;
 
     @Column(name = "created")
-    @Temporal(TemporalType.DATE)
     private Date created;
 
     @Column(name = "finished")
