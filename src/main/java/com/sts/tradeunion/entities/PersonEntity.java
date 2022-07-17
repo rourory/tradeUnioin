@@ -36,6 +36,9 @@ public class PersonEntity{
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
+    @Column(name = "education")
+    private String education;
+
     @Column(name = "address")
     private String address;
 

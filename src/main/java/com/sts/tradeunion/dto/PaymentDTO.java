@@ -4,7 +4,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class PaymentDTO {
+public class PaymentDTO extends AbstractDTO{
 
     private int id;
 

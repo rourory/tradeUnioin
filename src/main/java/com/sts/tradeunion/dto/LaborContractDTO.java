@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class LaborContractDTO {
+public class LaborContractDTO extends AbstractDTO {
 
     private int id;
 
