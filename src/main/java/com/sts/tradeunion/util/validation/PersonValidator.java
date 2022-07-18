@@ -21,30 +21,44 @@ public class PersonValidator implements Validator {
         return PersonEntity.class.equals(clazz);
     }
 
-    //проверка адресов на соответствие паттерну
+    /**
+     * Проверка полей класса PersonDTO, содержащие информацию о физических адресах человека на соответствие установленному шаблону.
+     *
+     * @param target Является валидируемым объектом, требующим приведения к валидируемом типу ({@link PersonDTO}).
+     * @param errors Является объектом {@link org.springframework.validation.BindingResult}, в который складываются ошибки валидации.
+     **/
     @Override
     public void validate(Object target, Errors errors) {
         PersonDTO person = (PersonDTO) target;
 
-        if(!person.getBirthPlace().matches(getSomePersonsPlaceMatch()))
-            errors.rejectValue("birthPlace","","Поле содержит недопустиные символы или не соответсвует шаблону");
-        if(!person.getLivePlace().matches(getSomePersonsPlaceMatch()))
-            errors.rejectValue("livePlace","","Поле содержит недопустиные символы или не соответсвует шаблону");
-        if(!person.getRegPlace().matches(getSomePersonsPlaceMatch()))
-            errors.rejectValue("regPlace","","Поле содержит недопустиные символы или не соответсвует шаблону");
-        if(!person.getAddress().matches(getSomePersonsPlaceMatch()))
-            errors.rejectValue("address","","Поле содержит недопустиные символы или не соответсвует шаблону");
+        if (!person.getBirthPlace().matches(getSomePersonsPlaceMatch()))
+            errors.rejectValue("birthPlace", "", "Поле содержит недопустиные символы или не соответсвует шаблону");
+        if (!person.getLivePlace().matches(getSomePersonsPlaceMatch()))
+            errors.rejectValue("livePlace", "", "Поле содержит недопустиные символы или не соответсвует шаблону");
+        if (!person.getRegPlace().matches(getSomePersonsPlaceMatch()))
+            errors.rejectValue("regPlace", "", "Поле содержит недопустиные символы или не соответсвует шаблону");
+        if (!person.getAddress().matches(getSomePersonsPlaceMatch()))
+            errors.rejectValue("address", "", "Поле содержит недопустиные символы или не соответсвует шаблону");
     }
-    private String getSomePersonsPlaceMatch(){
+
+    /**
+     * Возвращает шаблон физического адреса в виде регулярного выражения.
+     * Следующие варианты адреса являются валидными:
+     * <p>
+     * - г.Минск, ул.Мещерякова, д.13, кв.83 <br>
+     * - г.п. Чисть, 2ой пер.Богратиона,13б-83 <br>
+     * - дер.Красное, ул.Красной Звезды-83,72а <br>
+     * - гор.Набережные Челны, ул.Розы Люксембург, д.34-1, кв.83 <br>
+     * - г.Брест-Литовск, ул.50 лет Победы, д.34 <br>
+     * - г.Минск, пр.Машерова,38-702б
+     * @return Шаблон физического адреса в виде символьной строки.
+     **/
+    private String getSomePersonsPlaceMatch() {
         String orEmptyStart = "(";
-        // (г.Минск, ) (г.п.Витьба, ) (д.Щучино, )
         String town = "(([а-я])|([а-я]\\.[а-я]))\\.[а-яА-Я]{1,15},\\s?";
-        // (ул.Мещерякова) (2 пер.Богратиона) (пр.Машерова) (ул.Розы Люксембург)
-        String street = "(((ул)|(\\d{0,2}\\s?(пер)))|(пр))\\.((\\s?[а-яА-Я-]{1,15}){1,4})\\s?";
-        // (, д.24) (-23) (,д. 45б) (- 45в)
-        String houseNumber = "((,\\s?(д)\\.)|-)\\s?\\d{1,4}([а-я]?)\\.?";
-        //(, кв. 132) (к. 31в) (-72) (,789)
-        String quarterNumberIfExists = "(((,\\s?((кв|к)\\.)?)|-\\s?)\\s?\\d{1,4}([а-я]?))";
+        String street = "(((ул)|(\\d{0,2}\\s?-?\\s?[оиыйая]{0,3}\\s?(пер)))|(пр))\\.(\\s?[\\dа-яА-Я-]{1,15}){1,4}\\s?";
+        String houseNumber = "((,\\s?(д)\\.)|-|,)\\s?\\d{1,4}-?([а-я]?)\\.?";
+        String quarterNumberIfExists = "((((,\\s?((кв|к)\\.)?)|\\s?(-))\\s?\\d{1,4}([а-я]?))|\\w{0})";
         String orEmptyEnd = ")|\\w{0}";
         return orEmptyStart + town + street + houseNumber + quarterNumberIfExists + orEmptyEnd;
     }

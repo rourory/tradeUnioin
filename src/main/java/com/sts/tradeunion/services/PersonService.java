@@ -23,27 +23,35 @@ public class PersonService {
         this.personRepository = personRepository;
     }
 
-    public List<PersonEntity> getAllPeople(int page){
-        return personRepository.findAll(PageRequest.of(page,3,Sort.by("lastName").ascending())).getContent();
+    public List<PersonEntity> getAllPeople(int page) {
+        return personRepository.findAll(PageRequest.of(page, 3, Sort.by("lastName").ascending())).getContent();
     }
-    public PersonEntity getPerson (int id){
+
+    public PersonEntity getPerson(int id) {
         return personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
     }
+
     @Transactional
-    public PersonEntity save(PersonEntity person){
+    public PersonEntity save(PersonEntity person) {
         person.setUpdated(LocalDateTime.now());
         return personRepository.save(person);
     }
 
     @Transactional
-    public void deletePerson(int id){
+    public void deletePerson(int id) {
         personRepository.delete(personRepository.findById(id).get());
     }
-    public boolean isExists(PersonEntity person){
+
+    public boolean isExists(PersonEntity person) {
         return personRepository.existsById(person.getId());
     }
-    public List<PersonEntity> findByLastName (String lastName, int page){
-        return personRepository.findByLastName(lastName, PageRequest.of(page,3,Sort.by("lastName").ascending())).getContent();
+
+    public boolean isExists(int personId) {
+        return personRepository.existsById(personId);
+    }
+
+    public List<PersonEntity> findByLastName(String lastName, int page) {
+        return personRepository.findByLastName(lastName, PageRequest.of(page, 3, Sort.by("lastName").ascending())).getContent();
     }
 
 }

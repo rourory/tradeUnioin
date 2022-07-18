@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -27,6 +28,10 @@ public class MembershipCardService {
 
     public List<MembershipCardEntity> findByOwnerId(int ownerId) {
         return membershipCardRepository.getMembershipCardsByOwner(ownerId);
+    }
+
+    public Optional<MembershipCardEntity> findByCardNumber (int cardNumber) {
+        return membershipCardRepository.findMembershipCardEntityByCardNumber(cardNumber);
     }
 
     @Transactional

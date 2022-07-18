@@ -6,6 +6,13 @@ import com.sts.tradeunion.exceptions.EntityIsNotValidException;
 import com.sts.tradeunion.services.PersonService;
 
 import com.sts.tradeunion.util.validation.PersonValidator;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.OpenAPI31;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.callbacks.Callback;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/people")
+
 public class PeopleController{
 
     private final PersonService personService;
