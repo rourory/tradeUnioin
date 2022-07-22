@@ -1,7 +1,6 @@
 package com.sts.tradeunion.util.validation;
 
 import com.sts.tradeunion.dto.MembershipCardDTO;
-import com.sts.tradeunion.dto.PaymentDTO;
 import com.sts.tradeunion.services.MembershipCardService;
 import com.sts.tradeunion.services.PersonService;
 import com.sts.tradeunion.services.TradeUnionService;
@@ -37,7 +36,7 @@ public class MembershipCardValidator implements Validator {
     public void validate(Object target, Errors errors) {
 
         MembershipCardDTO membershipCard = (MembershipCardDTO) target;
-        if (!personService.isExists(membershipCard.getOwner().getId()))
+        if (personService.isExists(membershipCard.getOwner().getId()))
             errors.rejectValue("owner", "", "Такого человека нет в базе");
         if (membershipCardService.findByCardNumber(membershipCard.getCardNumber()).isPresent())
             errors.rejectValue("cardNumber", "", "Карта с таким номером уже существует");

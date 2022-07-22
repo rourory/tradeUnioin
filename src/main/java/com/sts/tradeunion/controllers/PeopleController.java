@@ -6,13 +6,6 @@ import com.sts.tradeunion.exceptions.EntityIsNotValidException;
 import com.sts.tradeunion.services.PersonService;
 
 import com.sts.tradeunion.util.validation.PersonValidator;
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
-import io.swagger.v3.oas.annotations.OpenAPI31;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.callbacks.Callback;
-import io.swagger.v3.oas.annotations.headers.Header;
-import io.swagger.v3.oas.annotations.info.Info;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +16,9 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/people")
-
 public class PeopleController{
 
     private final PersonService personService;
@@ -38,7 +31,6 @@ public class PeopleController{
         this.personValidator = personValidator;
     }
 
-    //Get list with all person
     @GetMapping
     public ResponseEntity<List<PersonDTO>> getPeople(@RequestParam("page") int page) {
         List<PersonDTO> people = new ArrayList<>();
@@ -47,13 +39,11 @@ public class PeopleController{
         return new ResponseEntity<>(people,HttpStatus.OK);
     }
 
-    //Get person with definite id
     @GetMapping("/{id}")
     public PersonDTO getPerson(@PathVariable int id) {
         return modelMapper.map(personService.getPerson(id), PersonDTO.class);
     }
 
-    //Create new person
     @PostMapping
     public ResponseEntity<Object> createPerson(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult) {
         personValidator.validate(personDTO,bindingResult);
@@ -62,7 +52,6 @@ public class PeopleController{
                 .save(modelMapper.map(personDTO, PersonEntity.class)), PersonDTO.class), HttpStatus.OK);
     }
 
-    //Update definite person
     @PutMapping
     public ResponseEntity<PersonDTO> updatePerson(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult) {
         personValidator.validate(personDTO,bindingResult);

@@ -39,7 +39,7 @@ public class PersonService {
 
     @Transactional
     public void deletePerson(int id) {
-        personRepository.delete(personRepository.findById(id).get());
+        personRepository.delete(personRepository.findById(id).orElseThrow(PersonNotFoundException::new));
     }
 
     public boolean isExists(PersonEntity person) {

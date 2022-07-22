@@ -26,7 +26,7 @@ public class EducationClassificationEntity {
     private String shortName;
 
     @Column(name = "name2")
-    private int charName;
+    private String charName;
 
     @Column(name = "updated")
     private LocalDateTime updated;

@@ -2,6 +2,7 @@ package com.sts.tradeunion.util.validation;
 
 import com.sts.tradeunion.dto.PersonDTO;
 import com.sts.tradeunion.entities.PersonEntity;
+import com.sts.tradeunion.services.EducationService;
 import com.sts.tradeunion.services.PersonService;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -11,9 +12,11 @@ import org.springframework.validation.Validator;
 public class PersonValidator implements Validator {
 
     private final PersonService personService;
+    private final EducationService educationService;
 
-    public PersonValidator(PersonService personService) {
+    public PersonValidator(PersonService personService, EducationService educationService) {
         this.personService = personService;
+        this.educationService = educationService;
     }
 
     @Override
@@ -22,7 +25,7 @@ public class PersonValidator implements Validator {
     }
 
     /**
-     * Проверка полей класса PersonDTO, содержащие информацию о физических адресах человека на соответствие установленному шаблону.
+     * Проверка полей класса PersonDTO на соответствие установленному шаблону.
      *
      * @param target Является валидируемым объектом, требующим приведения к валидируемом типу ({@link PersonDTO}).
      * @param errors Является объектом {@link org.springframework.validation.BindingResult}, в который складываются ошибки валидации.
@@ -39,6 +42,8 @@ public class PersonValidator implements Validator {
             errors.rejectValue("regPlace", "", "Поле содержит недопустиные символы или не соответсвует шаблону");
         if (!person.getAddress().matches(getSomePersonsPlaceMatch()))
             errors.rejectValue("address", "", "Поле содержит недопустиные символы или не соответсвует шаблону");
+        if (!educationService.findByName(person.getEducation()).isPresent())
+            errors.rejectValue("education", "", "Поле не соответствует установленному шаблону");
     }
 
     /**
@@ -55,9 +60,9 @@ public class PersonValidator implements Validator {
      **/
     private String getSomePersonsPlaceMatch() {
         String orEmptyStart = "(";
-        String town = "(([а-я])|([а-я]\\.[а-я]))\\.[а-яА-Я]{1,15},\\s?";
+        String town = "([а-я\\.]{1,4})\\.\\s?([а-яА-Я-]{1,15}\\s?){1,3},\\s?";
         String street = "(((ул)|(\\d{0,2}\\s?-?\\s?[оиыйая]{0,3}\\s?(пер)))|(пр))\\.(\\s?[\\dа-яА-Я-]{1,15}){1,4}\\s?";
-        String houseNumber = "((,\\s?(д)\\.)|-|,)\\s?\\d{1,4}-?([а-я]?)\\.?";
+        String houseNumber = "((,\\s?(д)\\.)|-|,)\\s?\\d{1,4}\\s?-?\\s?([а-я\\d]?)\\.?";
         String quarterNumberIfExists = "((((,\\s?((кв|к)\\.)?)|\\s?(-))\\s?\\d{1,4}([а-я]?))|\\w{0})";
         String orEmptyEnd = ")|\\w{0}";
         return orEmptyStart + town + street + houseNumber + quarterNumberIfExists + orEmptyEnd;

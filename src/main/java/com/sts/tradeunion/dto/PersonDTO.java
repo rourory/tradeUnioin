@@ -8,6 +8,12 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 
+/**
+ * DTO над {@link com.sts.tradeunion.entities.PersonEntity}.
+ * Валидация осуществляется как при помощи {@link javax.validation.constraints}, так и при помощи
+ * реализации интерфейса {@link org.springframework.validation.Validator}.
+ * @see com.sts.tradeunion.util.validation.PersonValidator
+ */
 @Data
 public class PersonDTO extends AbstractDTO {
 
@@ -28,7 +34,7 @@ public class PersonDTO extends AbstractDTO {
     @Past(message = "Дата рождения не должна быть в будущем")
     private Date birthDate;
 
-    @Pattern(regexp = "([а-яА-Я-]{1,20})|\\w{0}", message = "Поле должно состоять из не менее одного и не более двадцати русских символов")
+//    @Pattern(regexp = "([а-яА-Я-]{1,20})|\\w{0}", message = "Поле должно состоять из не менее одного и не более двадцати русских символов")
     private String education;
 
     private String address;
@@ -45,12 +51,12 @@ public class PersonDTO extends AbstractDTO {
     @NotNull(message = "Поле должно быть заполнено")
     private int maritalState;
 
-    @Pattern(regexp = "([а-яА-Я-]{2,20})|(\\w{0})", message = "Поле должно состоять из не менее двух и не более двадцати русских символов в одном слове или быть пустым")
+    @Pattern(regexp = "([а-яА-Я-]{2,20}\\s?){1,2}|(\\w{0})", message = "Поле должно состоять из не менее двух и не более двадцати русских символов в одном слове или быть пустым")
     private String citizenship;
 
     @Pattern(regexp = "([а-яА-Я-]{2,20})|(\\w{0})", message = "Поле должно состоять из не менее двух и не более двадцати русских символов в одном слове или быть пустым")
     private String nationality;
 
-    @Pattern(regexp = "(\\.{1,255})|(\\w{0})", message = "Поле должно состоять из не менее 1 и не более 255 символов или быть пустым")
+    @Pattern(regexp = "(.{1,255})|(\\w{0})", message = "Поле должно состоять из не менее 1 и не более 255 символов или быть пустым")
     private String comment;
 }

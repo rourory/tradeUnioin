@@ -9,11 +9,8 @@ import org.springframework.validation.Validator;
 
 @Component
 public class LaborContractValidator implements Validator {
-    private final LaborContractService laborContractService;
     private final PersonService personService;
-
-    public LaborContractValidator(LaborContractService laborContractService, PersonService personService) {
-        this.laborContractService = laborContractService;
+    public LaborContractValidator( PersonService personService) {
         this.personService = personService;
     }
 
@@ -24,7 +21,6 @@ public class LaborContractValidator implements Validator {
 
     /**
      * Проверка полей класса LaborContractDTO на соответствие установленным шаблонам
-     *
      * @param target Является валидируемым объектом, требующим приведения к валидируемом типу ({@link LaborContractDTO}).
      * @param errors Является объектом {@link org.springframework.validation.BindingResult}, в который складываются ошибки валидации.
      **/
@@ -32,8 +28,7 @@ public class LaborContractValidator implements Validator {
     public void validate(Object target, Errors errors) {
         LaborContractDTO laborContract = (LaborContractDTO) target;
 
-        if (!personService.isExists(laborContract.getOwner().getId())) {
+        if (personService.isExists(laborContract.getOwner().getId()))
             errors.rejectValue("owner", "", "Такого челвека нет в базе");
-        }
     }
 }
