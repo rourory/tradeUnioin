@@ -13,6 +13,10 @@ public class TradeUnionApplication {
         SpringApplication.run(TradeUnionApplication.class, args);
     }
 
+    /**
+     * Spring bean, используемы для конвертации DTO в Entity
+     * @return объект, имеющий методы конвертации pojo-объектов
+     */
     @Bean
     public ModelMapper getModelMapper(){
         return new ModelMapper();

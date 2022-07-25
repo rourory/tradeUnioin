@@ -21,7 +21,7 @@ public class PersonValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return PersonEntity.class.equals(clazz);
+        return PersonDTO.class.equals(clazz);
     }
 
     /**

@@ -2,8 +2,10 @@ package com.sts.tradeunion.security;
 
 import com.sts.tradeunion.entities.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Класс-обёртка над сущностью {@link UserEntity}, отражающей пользователя как совокупность username и password
@@ -23,7 +25,7 @@ public class UserDetailsImpl implements org.springframework.security.core.userde
     //Получения прав пользователя
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
     }
 
     //Получение пароля пользователя
