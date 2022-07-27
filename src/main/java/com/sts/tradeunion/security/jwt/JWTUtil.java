@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 import java.util.*;
 
 /**
- * Класс отвечает за генерацию и валидацию JWT.
+ * <h2> Класс отвечает за генерацию и валидацию JWT.
  */
 @Component
 public class JWTUtil {
@@ -28,37 +28,38 @@ public class JWTUtil {
     @Value("${issuer}")
     private String issuer;
 
+    @Value("${accessTokenValidityMinutes}")
+    private Integer accessTokenValidityMinutes;
+
     /**
-     * Метод отвечает за генерацию JWT. В данном случает определяется токен со следующими параметрами: <p>
-     * 1. Subject - информация о том, что в целом содержит токен. <p>
-     * 2-3. Claim - пара ключ-значение, являющаяся элементом Payload токена. <p>
-     * 4. IssuedAt - время выдачи токена. <p>
-     * 5. Issuer - подпись субъекта, выдаваемого токен. <p>
-     * 6. ExpiresAt - время действия токена. <p>
-     * 7. Sign - подпись токена секретным ключем. <p>
+     * <h2> Метод отвечает за генерацию JWT. В данном случает определяется токен со следующими параметрами: <p>
+     * 1. Subject - информация о том, что в целом содержит токен. <br>
+     * 2-3. Claim - пара ключ-значение, являющаяся элементом Payload токена. <br>
+     * 4. IssuedAt - время выдачи токена. <br>
+     * 5. Issuer - подпись субъекта, выдаваемого токен. <br>
+     * 6. ExpiresAt - время действия токена. <br>
+     * 7. Sign - подпись токена секретным ключем. <br>
      *
-     * @param username - значение, отражающее имя пользователя. Предназначено для помещения в Payload токена
-     * @param role     - значение, отражающее роль пользователя в системе. Предназначено для помещения в Payload токена
+     * @param username значение, отражающее имя пользователя. Предназначено для помещения в Payload токена
+     * @param role     значение, отражающее роль пользователя в системе. Предназначено для помещения в Payload токена
      * @return JWT токен в виде строки.
      */
     public String generateToken(String username, String role) {
-        Date expirationDate = Date.from(ZonedDateTime.now().plusMinutes(60).toInstant());
-
         return JWT.create()
                 .withSubject("User details")
                 .withClaim("username", username)
                 .withClaim("role", role)
                 .withIssuedAt(new Date())
                 .withIssuer(issuer)
-                .withExpiresAt(expirationDate)
+                .withExpiresAt(Date.from(ZonedDateTime.now().plusMinutes(accessTokenValidityMinutes).toInstant()))
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
     /**
-     * Метод отвечает за валидацию JWT.
-     * @param token - JWT в виде строки.
+     * <h2> Метод отвечает за валидацию JWT.
+     * @param token JWT в виде строки.
      * @return HashMap со строками, содержащимися в Payload токена.
-     * @throws JWTVerificationException - ошибка при верификации токена.
+     * @throws JWTVerificationException ошибка при верификации токена.
      */
     public Map<String,String> validateTokenAndRetrieveClaim(String token) throws JWTVerificationException {
         JWTVerifier verifier = buildVerifier();

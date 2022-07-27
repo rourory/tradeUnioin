@@ -14,6 +14,7 @@ import java.util.Date;
  * реализации интерфейса {@link org.springframework.validation.Validator}.
  * @see com.sts.tradeunion.util.validation.PersonValidator
  */
+//@Schema(description = "Сущность участника профсоюза")
 @Data
 public class PersonDTO extends AbstractDTO {
 

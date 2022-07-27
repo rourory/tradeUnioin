@@ -28,13 +28,11 @@ public class UserDetailsImpl implements org.springframework.security.core.userde
         return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
     }
 
-    //Получение пароля пользователя
     @Override
     public String getPassword() {
         return user.getPassword();
     }
 
-    //Получение имени пользователя
     @Override
     public String getUsername() {
         return user.getUsername();
@@ -57,7 +55,8 @@ public class UserDetailsImpl implements org.springframework.security.core.userde
 
     @Override
     public boolean isEnabled() {
-        return true;
+//        return true;
+        return user.isReliabilityDemonstration();
     }
 
     //Метод необходим для получения данных аутенфицированного пользователя

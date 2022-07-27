@@ -26,7 +26,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     /**
      * Объект из контекста Spring, отвечающий за шифрование пароля.<p>
-     * Bean создается в конфигурационном классе security {@link SecurityConfig#getPasswordEncoder()}
+     * Bean создается в классе {@link com.sts.tradeunion.TradeUnionApplication#getPasswordEncoder()}
      */
     private final PasswordEncoder passwordEncoder;
 

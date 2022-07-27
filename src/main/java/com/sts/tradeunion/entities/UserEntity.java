@@ -24,6 +24,9 @@ public class UserEntity {
     @Column(name = "role")
     private String role;
 
+    @Column(name = "reliability_demonstration")
+    private boolean reliabilityDemonstration;
+
     @Column(name = "updated")
     private LocalDateTime updated;
 

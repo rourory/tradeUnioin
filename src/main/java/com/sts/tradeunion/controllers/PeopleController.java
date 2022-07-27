@@ -9,6 +9,7 @@ import com.sts.tradeunion.util.validation.PersonValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,22 +26,25 @@ public class PeopleController{
     private final ModelMapper modelMapper;
     private final PersonValidator personValidator;
 
-    public PeopleController(PersonService personService, ModelMapper modelMapper, PersonValidator personValidator) {
+
+    public PeopleController( PersonService personService, ModelMapper modelMapper, PersonValidator personValidator) {
         this.personService = personService;
         this.modelMapper = modelMapper;
         this.personValidator = personValidator;
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping
-    public ResponseEntity<List<PersonDTO>> getPeople(@RequestParam("page") int page) {
+    public ResponseEntity<List<PersonDTO>> getPeople(@RequestParam("page")int page) {
         List<PersonDTO> people = new ArrayList<>();
         if (page > 0)
             personService.getAllPeople(page - 1).forEach(person -> people.add(modelMapper.map(person, PersonDTO.class)));
         return new ResponseEntity<>(people,HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
-    public PersonDTO getPerson(@PathVariable int id) {
+    public PersonDTO getPerson(@PathVariable  int id) {
         return modelMapper.map(personService.getPerson(id), PersonDTO.class);
     }
 
@@ -51,7 +55,6 @@ public class PeopleController{
         return new ResponseEntity<>(modelMapper.map(personService
                 .save(modelMapper.map(personDTO, PersonEntity.class)), PersonDTO.class), HttpStatus.OK);
     }
-
     @PutMapping
     public ResponseEntity<PersonDTO> updatePerson(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult) {
         personValidator.validate(personDTO,bindingResult);
@@ -59,8 +62,6 @@ public class PeopleController{
         return new ResponseEntity<>(modelMapper.map(personService
                 .save(modelMapper.map(personDTO, PersonEntity.class)), PersonDTO.class), HttpStatus.OK);
     }
-
-    //Delete definite person
     @DeleteMapping
     public ResponseEntity<HttpStatus> deletePerson(@RequestParam("id") int id) {
         personService.deletePerson(id);
