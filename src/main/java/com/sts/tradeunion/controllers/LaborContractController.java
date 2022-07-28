@@ -8,6 +8,7 @@ import com.sts.tradeunion.util.validation.LaborContractValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class LaborContractController {
         this.laborContractValidator = laborContractValidator;
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping
     public ResponseEntity<List<LaborContractDTO>> getOwnersMembershipCards(@PathVariable int id) {
         List<LaborContractDTO> laborContracts = new ArrayList<>();
@@ -37,6 +39,7 @@ public class LaborContractController {
         return new ResponseEntity<>(laborContracts, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<LaborContractDTO> create(@PathVariable(value = "id") int personId,
                                                    @RequestBody @Valid LaborContractDTO laborContract, BindingResult bindingResult) {
@@ -46,6 +49,7 @@ public class LaborContractController {
                 .save(modelMapper.map(laborContract, LaborContractEntity.class), personId), LaborContractDTO.class), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<LaborContractDTO> update(@PathVariable(value = "id") int personId,
                                                    @RequestBody @Valid LaborContractDTO laborContract, BindingResult bindingResult) {
@@ -55,6 +59,7 @@ public class LaborContractController {
                 .update(modelMapper.map(laborContract, LaborContractEntity.class), personId), LaborContractDTO.class), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping
     public ResponseEntity<HttpStatus> delete(@PathVariable(value = "id") int ownerId, @RequestParam("contractId") int id) {
         laborContractService.delete(ownerId, id);

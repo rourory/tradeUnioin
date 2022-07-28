@@ -19,15 +19,12 @@ import java.io.Serializable;
 @Component
 @Slf4j
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
-	protected final Log logger = LogFactory.getLog(getClass());
 	private static final long serialVersionUID = -7858869558953243875L;
 
 	//Send Unauthorized when an error occurs
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 						 AuthenticationException authException) throws IOException {
-		logger.error("Unauthorized", authException);
-
 		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
 	}
 }

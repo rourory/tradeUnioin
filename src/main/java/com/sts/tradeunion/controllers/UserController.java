@@ -40,6 +40,7 @@ public class UserController {
         this.authenticationManager = authenticationManager;
     }
 
+
     @PostMapping("/registration")
     public ResponseEntity<UserDTO> performRegistration(@RequestBody @Valid AuthenticationDTO user, BindingResult bindingResult) {
         validator.validate(user, bindingResult);

@@ -8,6 +8,7 @@ import com.sts.tradeunion.util.validation.MembershipCardValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class MembershipCardController {
         this.membershipCardValidator = membershipCardValidator;
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping
     public ResponseEntity<List<MembershipCardDTO>> getOwnersMembershipCards(@PathVariable int id) {
         List<MembershipCardDTO> membershipCards = new ArrayList<>();
@@ -37,6 +39,7 @@ public class MembershipCardController {
         return new ResponseEntity<>(membershipCards, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<MembershipCardDTO> create(@PathVariable(value = "id") int personId,
                                                     @RequestBody @Valid MembershipCardDTO membershipCard, BindingResult bindingResult) {
@@ -46,6 +49,7 @@ public class MembershipCardController {
                 .save(modelMapper.map(membershipCard, MembershipCardEntity.class), personId), MembershipCardDTO.class), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<MembershipCardDTO> update(@PathVariable(value = "id") int personId,
                                                     @RequestBody @Valid MembershipCardDTO membershipCard, BindingResult bindingResult) {
@@ -55,6 +59,7 @@ public class MembershipCardController {
                 .update(modelMapper.map(membershipCard, MembershipCardEntity.class), personId), MembershipCardDTO.class), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping
     public ResponseEntity<HttpStatus> delete(@PathVariable(value = "id") int ownerId, @RequestParam("cardId") int id) {
         membershipCardService.delete(ownerId, id);

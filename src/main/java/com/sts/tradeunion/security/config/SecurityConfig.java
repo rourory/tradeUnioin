@@ -26,8 +26,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final JWTFilter jwtFilter;
     private final PasswordEncoder passwordEncoder;
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final ObjectMapper om = new ObjectMapper();
+
     public SecurityConfig(UserService userService, JWTFilter jwtFilter, PasswordEncoder passwordEncoder, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
         this.userService = userService;
         this.jwtFilter = jwtFilter;
@@ -39,17 +40,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * <h2> Метод конфигурирует Security для таких случаев, как использование нестандартной логин-формы,
      * явное указание уровней доступа к определенным страницам, авторизацию и т.д.<p>
      * Блоки конфигурации разделяются методом {@code and}: <p>
+     * 1. Отключение CORS и системы защиты от межсайтовой подделки запросов <br>
+     * 2. Определение Matchers для доступа всем пользователям <br>
+     * 3. Определение доступа аутентифицированным пользователям <br>
+     * 4. Определение authenticationEntryPoint <br>
+     * 5. Явное указание на использование Stateless политики <br>
+     * 6. Определение в качестве UsernamePasswordAuthenticationFilter кастомного JWT <br>
+     * 7. Определение действий при возникновении ошибки "Access denied" <br>
+     *
      * @param httpSecurity объект, находящийся в контексте приложения.
      * @throws Exception
      */
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception{
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .cors().and().csrf().disable()
-                .authorizeRequests().antMatchers(HttpMethod.POST,"/auth/login", "/error", "/auth/registration","/swagger-ui/*"
-                        ,"/dev.html","/swagger-ui/index.html", "/v3/*", "/v3/api-docs/swagger-config").permitAll()
+                .authorizeRequests().antMatchers(HttpMethod.POST, "/auth/login", "/error", "/auth/registration", "/swagger-ui/**"
+                        , "/dev.html", "/swagger-ui/index.html", "/v3/**", "/v3/api-docs/swagger-config").permitAll()
                 .and()
-                .authorizeRequests().anyRequest().hasAnyRole("ADMIN", "USER")
+                .authorizeRequests().anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -70,6 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * <h2> Метод конфигурирует логику аутентификации.
+     *
      * @param builder требует объект реализации {@link org.springframework.security.core.userdetails.UserDetailsService}
      *                для классической конфигурации Security или объект реализации {@link org.springframework.security.authentication.AuthenticationProvider}
      *                для кастомной конфигурации Security

@@ -53,6 +53,9 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader(Constants.HEADER_STRING);
+// request.getHeaderNames().asIterator().forEachRemaining(s -> {
+//     System.out.println(s.toString());
+// });
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith(Constants.TOKEN_PREFIX)) {
             try {
                 Map<String, String> claims = jwtUtil.validateTokenAndRetrieveClaim(authHeader.substring(7));
@@ -70,12 +73,14 @@ public class JWTFilter extends OncePerRequestFilter {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,"Ошибка в процессе расшифровки JWT");
             }
         } else {
+
             List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_NON_AUTHORIZED"));
             UserDetails userDetails = new User("api_user", "$2y$12$Y2MfMK7PcAchzL/oaVMk0ecUQEFV.mfwsCHmY6gqn2hpLH8BaZwcy", authorities);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
                     userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
         }
         filterChain.doFilter(request,response);
     }

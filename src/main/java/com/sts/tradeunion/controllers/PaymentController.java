@@ -8,6 +8,7 @@ import com.sts.tradeunion.util.validation.PaymentValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class PaymentController {
         this.paymentValidator = paymentValidator;
     }
 
-
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping
     public ResponseEntity<List<PaymentDTO>> getOwnersMembershipCards(@PathVariable int id) {
         List<PaymentDTO> payments = new ArrayList<>();
@@ -38,6 +39,7 @@ public class PaymentController {
         return new ResponseEntity<>(payments, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PaymentDTO> create(@PathVariable(value = "id") int personId,
                                              @RequestBody @Valid PaymentDTO payment, BindingResult bindingResult) {
@@ -47,6 +49,7 @@ public class PaymentController {
                 .save(modelMapper.map(payment, PaymentEntity.class), personId), PaymentDTO.class), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<PaymentDTO> update(@PathVariable(value = "id") int personId,
                                              @RequestBody @Valid PaymentDTO payment, BindingResult bindingResult) {
@@ -56,6 +59,7 @@ public class PaymentController {
                 .update(modelMapper.map(payment, PaymentEntity.class), personId), PaymentDTO.class), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping
     public ResponseEntity<HttpStatus> delete(@PathVariable(value = "id") int ownerId, @RequestParam("paymentId") int id) {
         paymentService.delete(ownerId, id);

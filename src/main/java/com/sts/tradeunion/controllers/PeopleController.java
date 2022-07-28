@@ -3,9 +3,11 @@ package com.sts.tradeunion.controllers;
 import com.sts.tradeunion.dto.PersonDTO;
 import com.sts.tradeunion.entities.PersonEntity;
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
+import com.sts.tradeunion.security.jwt.Constants;
 import com.sts.tradeunion.services.PersonService;
-
 import com.sts.tradeunion.util.validation.PersonValidator;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.v3.oas.annotations.headers.Header;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +22,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/people")
-public class PeopleController{
+public class PeopleController {
 
     private final PersonService personService;
     private final ModelMapper modelMapper;
     private final PersonValidator personValidator;
 
-
-    public PeopleController( PersonService personService, ModelMapper modelMapper, PersonValidator personValidator) {
+    public PeopleController(PersonService personService, ModelMapper modelMapper, PersonValidator personValidator) {
         this.personService = personService;
         this.modelMapper = modelMapper;
         this.personValidator = personValidator;
@@ -35,38 +36,43 @@ public class PeopleController{
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping
-    public ResponseEntity<List<PersonDTO>> getPeople(@RequestParam("page")int page) {
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "Bearer XXX_access_token")
+    public ResponseEntity<List<PersonDTO>> getPeople(@RequestParam("page") int page) {
         List<PersonDTO> people = new ArrayList<>();
         if (page > 0)
             personService.getAllPeople(page - 1).forEach(person -> people.add(modelMapper.map(person, PersonDTO.class)));
-        return new ResponseEntity<>(people,HttpStatus.OK);
+        return new ResponseEntity<>(people, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/{id}")
-    public PersonDTO getPerson(@PathVariable  int id) {
+    public PersonDTO getPerson(@PathVariable int id) {
         return modelMapper.map(personService.getPerson(id), PersonDTO.class);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Object> createPerson(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult) {
-        personValidator.validate(personDTO,bindingResult);
-        if(bindingResult.hasErrors()) throw new EntityIsNotValidException(bindingResult, personDTO);
+        personValidator.validate(personDTO, bindingResult);
+        if (bindingResult.hasErrors()) throw new EntityIsNotValidException(bindingResult, personDTO);
         return new ResponseEntity<>(modelMapper.map(personService
                 .save(modelMapper.map(personDTO, PersonEntity.class)), PersonDTO.class), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<PersonDTO> updatePerson(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult) {
-        personValidator.validate(personDTO,bindingResult);
-        if(bindingResult.hasErrors()) throw new EntityIsNotValidException(bindingResult, personDTO);
+        personValidator.validate(personDTO, bindingResult);
+        if (bindingResult.hasErrors()) throw new EntityIsNotValidException(bindingResult, personDTO);
         return new ResponseEntity<>(modelMapper.map(personService
                 .save(modelMapper.map(personDTO, PersonEntity.class)), PersonDTO.class), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping
     public ResponseEntity<HttpStatus> deletePerson(@RequestParam("id") int id) {
         personService.deletePerson(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }
 
