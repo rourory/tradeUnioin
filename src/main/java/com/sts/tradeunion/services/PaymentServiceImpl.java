@@ -49,8 +49,8 @@ public class PaymentServiceImpl implements WithOwnerService<PaymentEntity> {
     }
 
     @Transactional
-    public boolean delete(PersonEntity owner, int id) {
-        return paymentRepository.deleteByOwnerAndId(personRepository.findById(id).orElseThrow(PersonNotFoundException::new), id);
+    public boolean delete(int ownerId, int id) {
+        return paymentRepository.deleteByOwnerAndId(personRepository.findById(ownerId).orElseThrow(PersonNotFoundException::new), id);
     }
 
     public List<PaymentEntity> findByOwnerId(int ownerId) {

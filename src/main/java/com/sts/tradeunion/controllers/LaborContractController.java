@@ -71,7 +71,7 @@ public class LaborContractController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
             , dataTypeClass = String.class, example = "Bearer XXX_access_token")
     public ResponseEntity<HttpStatus> delete(@PathVariable(value = "id") int ownerId, @RequestParam("contractId") int id) {
-        laborContractService.deleteById(id);
+        laborContractService.delete(ownerId,id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

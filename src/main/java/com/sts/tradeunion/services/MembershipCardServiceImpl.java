@@ -44,8 +44,8 @@ public class MembershipCardServiceImpl implements WithOwnerService<MembershipCar
         return membershipCardRepository.save(membershipCard);
     }
     @Transactional
-    public boolean delete(PersonEntity owner, int id) {
-        return membershipCardRepository.deleteByOwnerAndId(personRepository.findById(id).orElseThrow(PersonNotFoundException::new),id);
+    public boolean delete(int ownerId, int id) {
+        return membershipCardRepository.deleteByOwnerAndId(personRepository.findById(ownerId).orElseThrow(PersonNotFoundException::new),id);
     }
 
     public List<MembershipCardEntity> findByOwnerId(int ownerId) {

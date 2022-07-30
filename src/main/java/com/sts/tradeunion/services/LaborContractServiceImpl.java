@@ -47,8 +47,8 @@ public class LaborContractServiceImpl implements WithOwnerService<LaborContractE
     }
 
     @Transactional
-    public boolean delete(PersonEntity owner, int id) {
-        return laborContractRepository.deleteByOwnerAndId(personRepository.findById(owner.getId()).orElseThrow(PersonNotFoundException::new),id);
+    public boolean delete(int ownerId, int id) {
+        return laborContractRepository.deleteByOwnerAndId(personRepository.findById(ownerId).orElseThrow(PersonNotFoundException::new),id);
     }
 
     public List<LaborContractEntity> findByOwnerId(int ownerId) {
