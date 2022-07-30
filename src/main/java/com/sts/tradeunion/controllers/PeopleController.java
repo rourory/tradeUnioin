@@ -3,11 +3,9 @@ package com.sts.tradeunion.controllers;
 import com.sts.tradeunion.dto.PersonDTO;
 import com.sts.tradeunion.entities.PersonEntity;
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
-import com.sts.tradeunion.security.jwt.Constants;
-import com.sts.tradeunion.services.PersonService;
+import com.sts.tradeunion.services.PersonServiceImpl;
 import com.sts.tradeunion.util.validation.PersonValidator;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.v3.oas.annotations.headers.Header;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +22,11 @@ import java.util.List;
 @RequestMapping("/people")
 public class PeopleController {
 
-    private final PersonService personService;
+    private final PersonServiceImpl personService;
     private final ModelMapper modelMapper;
     private final PersonValidator personValidator;
 
-    public PeopleController(PersonService personService, ModelMapper modelMapper, PersonValidator personValidator) {
+    public PeopleController(PersonServiceImpl personService, ModelMapper modelMapper, PersonValidator personValidator) {
         this.personService = personService;
         this.modelMapper = modelMapper;
         this.personValidator = personValidator;
@@ -36,22 +34,27 @@ public class PeopleController {
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping
-    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header", dataTypeClass = String.class, example = "Bearer XXX_access_token")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
+            , dataTypeClass = String.class, example = "Bearer XXX_access_token")
     public ResponseEntity<List<PersonDTO>> getPeople(@RequestParam("page") int page) {
         List<PersonDTO> people = new ArrayList<>();
         if (page > 0)
-            personService.getAllPeople(page - 1).forEach(person -> people.add(modelMapper.map(person, PersonDTO.class)));
+            personService.getAll(page - 1).forEach(person -> people.add(modelMapper.map(person, PersonDTO.class)));
         return new ResponseEntity<>(people, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/{id}")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
+            , dataTypeClass = String.class, example = "Bearer XXX_access_token")
     public PersonDTO getPerson(@PathVariable int id) {
-        return modelMapper.map(personService.getPerson(id), PersonDTO.class);
+        return modelMapper.map(personService.findById(id), PersonDTO.class);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
+            , dataTypeClass = String.class, example = "Bearer XXX_access_token")
     public ResponseEntity<Object> createPerson(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult) {
         personValidator.validate(personDTO, bindingResult);
         if (bindingResult.hasErrors()) throw new EntityIsNotValidException(bindingResult, personDTO);
@@ -61,6 +64,8 @@ public class PeopleController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
+            , dataTypeClass = String.class, example = "Bearer XXX_access_token")
     public ResponseEntity<PersonDTO> updatePerson(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult) {
         personValidator.validate(personDTO, bindingResult);
         if (bindingResult.hasErrors()) throw new EntityIsNotValidException(bindingResult, personDTO);
@@ -70,8 +75,11 @@ public class PeopleController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
+            , dataTypeClass = String.class, example = "Bearer XXX_access_token")
     public ResponseEntity<HttpStatus> deletePerson(@RequestParam("id") int id) {
-        personService.deletePerson(id);
+        if (personService.deleteById(id))
+        personService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

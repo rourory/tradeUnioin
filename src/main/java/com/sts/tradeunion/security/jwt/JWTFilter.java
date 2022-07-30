@@ -1,7 +1,7 @@
 package com.sts.tradeunion.security.jwt;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.sts.tradeunion.services.UserService;
+import com.sts.tradeunion.services.UserServiceImpl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,9 +26,9 @@ import java.util.*;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public JWTFilter(JWTUtil jwtUtil, UserService userService) {
+    public JWTFilter(JWTUtil jwtUtil, UserServiceImpl userService) {
         this.jwtUtil = jwtUtil;
         this.userService = userService;
     }
@@ -53,9 +53,6 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader(Constants.HEADER_STRING);
-// request.getHeaderNames().asIterator().forEachRemaining(s -> {
-//     System.out.println(s.toString());
-// });
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith(Constants.TOKEN_PREFIX)) {
             try {
                 Map<String, String> claims = jwtUtil.validateTokenAndRetrieveClaim(authHeader.substring(7));
@@ -73,6 +70,9 @@ public class JWTFilter extends OncePerRequestFilter {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,"Ошибка в процессе расшифровки JWT");
             }
         } else {
+            /* Код в блоке в данном блоке существует для тестирования работы со Swagger.
+             Он позволяет создать имитацию авторизованного
+             пользователя для доступа к схеме контроллеров. */
 
             List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_NON_AUTHORIZED"));
             UserDetails userDetails = new User("api_user", "$2y$12$Y2MfMK7PcAchzL/oaVMk0ecUQEFV.mfwsCHmY6gqn2hpLH8BaZwcy", authorities);
@@ -80,7 +80,6 @@ public class JWTFilter extends OncePerRequestFilter {
                     userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
         }
         filterChain.doFilter(request,response);
     }

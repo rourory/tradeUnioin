@@ -3,7 +3,6 @@ package com.sts.tradeunion.services;
 import com.sts.tradeunion.entities.UserEntity;
 import com.sts.tradeunion.repositories.UserRepository;
 import com.sts.tradeunion.security.UserDetailsImpl;
-import com.sts.tradeunion.security.config.SecurityConfig;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * Service класс для работы с сущностью {@link UserEntity}. Это особый service класс, необходимый для работы
@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 @Service
 @Transactional(readOnly = true)
-public class UserService implements UserDetailsService {
+public class UserServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
     /**
@@ -30,7 +30,7 @@ public class UserService implements UserDetailsService {
      */
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }

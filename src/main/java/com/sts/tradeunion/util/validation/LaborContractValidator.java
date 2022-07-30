@@ -1,16 +1,15 @@
 package com.sts.tradeunion.util.validation;
 
 import com.sts.tradeunion.dto.LaborContractDTO;
-import com.sts.tradeunion.services.LaborContractService;
-import com.sts.tradeunion.services.PersonService;
+import com.sts.tradeunion.services.PersonServiceImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
 public class LaborContractValidator implements Validator {
-    private final PersonService personService;
-    public LaborContractValidator( PersonService personService) {
+    private final PersonServiceImpl personService;
+    public LaborContractValidator( PersonServiceImpl personService) {
         this.personService = personService;
     }
 
@@ -28,7 +27,7 @@ public class LaborContractValidator implements Validator {
     public void validate(Object target, Errors errors) {
         LaborContractDTO laborContract = (LaborContractDTO) target;
 
-        if (personService.isExists(laborContract.getOwner().getId()))
+        if (personService.isExist(laborContract.getOwner().getId()))
             errors.rejectValue("owner", "", "Такого челвека нет в базе");
     }
 }

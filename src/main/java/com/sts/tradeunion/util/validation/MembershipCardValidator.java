@@ -1,9 +1,9 @@
 package com.sts.tradeunion.util.validation;
 
 import com.sts.tradeunion.dto.MembershipCardDTO;
-import com.sts.tradeunion.services.MembershipCardService;
-import com.sts.tradeunion.services.PersonService;
-import com.sts.tradeunion.services.TradeUnionService;
+import com.sts.tradeunion.services.MembershipCardServiceImpl;
+import com.sts.tradeunion.services.PersonServiceImpl;
+import com.sts.tradeunion.services.TradeUnionServiceImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -11,11 +11,11 @@ import org.springframework.validation.Validator;
 @Component
 public class MembershipCardValidator implements Validator {
 
-    private final PersonService personService;
-    private final MembershipCardService membershipCardService;
-    private final TradeUnionService tradeUnionService;
+    private final PersonServiceImpl personService;
+    private final MembershipCardServiceImpl membershipCardService;
+    private final TradeUnionServiceImpl tradeUnionService;
 
-    public MembershipCardValidator(PersonService personService, MembershipCardService membershipCardService, TradeUnionService tradeUnionService) {
+    public MembershipCardValidator(PersonServiceImpl personService, MembershipCardServiceImpl membershipCardService, TradeUnionServiceImpl tradeUnionService) {
         this.personService = personService;
         this.membershipCardService = membershipCardService;
         this.tradeUnionService = tradeUnionService;
@@ -36,7 +36,7 @@ public class MembershipCardValidator implements Validator {
     public void validate(Object target, Errors errors) {
 
         MembershipCardDTO membershipCard = (MembershipCardDTO) target;
-        if (personService.isExists(membershipCard.getOwner().getId()))
+        if (personService.isExist(membershipCard.getOwner().getId()))
             errors.rejectValue("owner", "", "Такого человека нет в базе");
         if (membershipCardService.findByCardNumber(membershipCard.getCardNumber()).isPresent())
             errors.rejectValue("cardNumber", "", "Карта с таким номером уже существует");

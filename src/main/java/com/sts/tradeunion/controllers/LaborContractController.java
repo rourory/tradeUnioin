@@ -3,8 +3,9 @@ package com.sts.tradeunion.controllers;
 import com.sts.tradeunion.dto.LaborContractDTO;
 import com.sts.tradeunion.entities.docs.LaborContractEntity;
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
-import com.sts.tradeunion.services.LaborContractService;
+import com.sts.tradeunion.services.LaborContractServiceImpl;
 import com.sts.tradeunion.util.validation.LaborContractValidator;
+import io.swagger.annotations.ApiImplicitParam;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,11 @@ import java.util.List;
 @RequestMapping("people/{id}/labor-contracts")
 public class LaborContractController {
 
-    private final LaborContractService laborContractService;
+    private final LaborContractServiceImpl laborContractService;
     private final ModelMapper modelMapper;
     private final LaborContractValidator laborContractValidator;
 
-    public LaborContractController(LaborContractService laborContractService, ModelMapper modelMapper, LaborContractValidator laborContractValidator) {
+    public LaborContractController(LaborContractServiceImpl laborContractService, ModelMapper modelMapper, LaborContractValidator laborContractValidator) {
         this.laborContractService = laborContractService;
         this.modelMapper = modelMapper;
         this.laborContractValidator = laborContractValidator;
@@ -32,6 +33,8 @@ public class LaborContractController {
 
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
+            , dataTypeClass = String.class, example = "Bearer XXX_access_token")
     public ResponseEntity<List<LaborContractDTO>> getOwnersMembershipCards(@PathVariable int id) {
         List<LaborContractDTO> laborContracts = new ArrayList<>();
         laborContractService.findByOwnerId(id)
@@ -41,6 +44,8 @@ public class LaborContractController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
+            , dataTypeClass = String.class, example = "Bearer XXX_access_token")
     public ResponseEntity<LaborContractDTO> create(@PathVariable(value = "id") int personId,
                                                    @RequestBody @Valid LaborContractDTO laborContract, BindingResult bindingResult) {
         laborContractValidator.validate(laborContract, bindingResult);
@@ -51,6 +56,8 @@ public class LaborContractController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
+            , dataTypeClass = String.class, example = "Bearer XXX_access_token")
     public ResponseEntity<LaborContractDTO> update(@PathVariable(value = "id") int personId,
                                                    @RequestBody @Valid LaborContractDTO laborContract, BindingResult bindingResult) {
         laborContractValidator.validate(laborContract, bindingResult);
@@ -61,8 +68,10 @@ public class LaborContractController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
+            , dataTypeClass = String.class, example = "Bearer XXX_access_token")
     public ResponseEntity<HttpStatus> delete(@PathVariable(value = "id") int ownerId, @RequestParam("contractId") int id) {
-        laborContractService.delete(ownerId, id);
+        laborContractService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

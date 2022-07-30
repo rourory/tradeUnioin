@@ -25,7 +25,7 @@ public class SwaggerConfig {
                 "APIs for MyApp.",
                 "1.0",
                 "Terms of service",
-                new Contact("test", "www.org.com", "test@emaildomain.com"),
+                new Contact("rrr", "www.rrr.com", "rrr@gmail.com"),
                 "License of API",
                 "API license URL",
                 Collections.emptyList());

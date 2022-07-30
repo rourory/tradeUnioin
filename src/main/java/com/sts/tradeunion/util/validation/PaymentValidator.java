@@ -1,8 +1,8 @@
 package com.sts.tradeunion.util.validation;
 
 import com.sts.tradeunion.dto.PaymentDTO;
-import com.sts.tradeunion.services.PersonService;
-import com.sts.tradeunion.services.TradeUnionService;
+import com.sts.tradeunion.services.PersonServiceImpl;
+import com.sts.tradeunion.services.TradeUnionServiceImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -10,10 +10,10 @@ import org.springframework.validation.Validator;
 @Component
 public class PaymentValidator implements Validator {
 
-    private final PersonService personService;
-    private final TradeUnionService tradeUnionService;
+    private final PersonServiceImpl personService;
+    private final TradeUnionServiceImpl tradeUnionService;
 
-    public PaymentValidator(PersonService personService, TradeUnionService tradeUnionService) {
+    public PaymentValidator(PersonServiceImpl personService, TradeUnionServiceImpl tradeUnionService) {
         this.personService = personService;
         this.tradeUnionService = tradeUnionService;
     }
@@ -34,7 +34,7 @@ public class PaymentValidator implements Validator {
     public void validate(Object target, Errors errors) {
         PaymentDTO payment = (PaymentDTO) target;
 
-        if (personService.isExists(payment.getOwner().getId()))
+        if (personService.isExist(payment.getOwner().getId()))
             errors.rejectValue("owner", "", "Такого человека нет в базе");
         if (!tradeUnionService.findById(payment.getTradeUnionId()).isPresent())
             errors.rejectValue("tradeUnionId", "", "Такого профсоюза нет в базе");

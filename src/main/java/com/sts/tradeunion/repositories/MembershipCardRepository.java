@@ -1,5 +1,6 @@
 package com.sts.tradeunion.repositories;
 
+import com.sts.tradeunion.entities.PersonEntity;
 import com.sts.tradeunion.entities.docs.MembershipCardEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,6 @@ public interface MembershipCardRepository extends JpaRepository<MembershipCardEn
    @Query(value = "SELECT created FROM doc_member AS dm WHERE dm.id = ?1", nativeQuery = true)
    Date getCreatedDateById(int id);
    Optional<MembershipCardEntity>findMembershipCardEntityByCardNumber(int cardNumber);
+
+   boolean deleteByOwnerAndId(PersonEntity owner, int id);
 }

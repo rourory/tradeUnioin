@@ -3,7 +3,7 @@ package com.sts.tradeunion.security.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sts.tradeunion.security.jwt.JWTFilter;
 import com.sts.tradeunion.security.jwt.JwtAuthenticationEntryPoint;
-import com.sts.tradeunion.services.UserService;
+import com.sts.tradeunion.services.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -23,13 +23,13 @@ import javax.servlet.http.HttpServletResponse;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final JWTFilter jwtFilter;
     private final PasswordEncoder passwordEncoder;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final ObjectMapper om = new ObjectMapper();
 
-    public SecurityConfig(UserService userService, JWTFilter jwtFilter, PasswordEncoder passwordEncoder, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+    public SecurityConfig(UserServiceImpl userService, JWTFilter jwtFilter, PasswordEncoder passwordEncoder, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
         this.userService = userService;
         this.jwtFilter = jwtFilter;
         this.passwordEncoder = passwordEncoder;

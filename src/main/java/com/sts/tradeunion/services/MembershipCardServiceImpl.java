@@ -2,8 +2,10 @@ package com.sts.tradeunion.services;
 
 import com.sts.tradeunion.entities.PersonEntity;
 import com.sts.tradeunion.entities.docs.MembershipCardEntity;
+import com.sts.tradeunion.exceptions.PersonNotFoundException;
 import com.sts.tradeunion.repositories.MembershipCardRepository;
 import com.sts.tradeunion.repositories.PersonRepository;
+import com.sts.tradeunion.services.interfaces.WithOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,28 +17,20 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class MembershipCardService {
+public class MembershipCardServiceImpl implements WithOwnerService<MembershipCardEntity> {
 
     private final MembershipCardRepository membershipCardRepository;
     private final PersonRepository personRepository;
 
     @Autowired
-    public MembershipCardService(MembershipCardRepository membershipCardRepository, PersonRepository personRepository) {
+    public MembershipCardServiceImpl(MembershipCardRepository membershipCardRepository, PersonRepository personRepository) {
         this.membershipCardRepository = membershipCardRepository;
         this.personRepository = personRepository;
     }
 
-    public List<MembershipCardEntity> findByOwnerId(int ownerId) {
-        return membershipCardRepository.getMembershipCardsByOwner(ownerId);
-    }
-
-    public Optional<MembershipCardEntity> findByCardNumber (int cardNumber) {
-        return membershipCardRepository.findMembershipCardEntityByCardNumber(cardNumber);
-    }
-
     @Transactional
     public MembershipCardEntity save(MembershipCardEntity membershipCard, int ownerId) {
-        membershipCard.setOwner(personRepository.findById(ownerId).get());
+        membershipCard.setOwner(personRepository.findById(ownerId).orElseThrow(PersonNotFoundException::new));
         membershipCard.setUpdated(LocalDateTime.now());
         membershipCard.setCreated(new Date());
         return membershipCardRepository.save(membershipCard);
@@ -44,21 +38,25 @@ public class MembershipCardService {
 
     @Transactional
     public MembershipCardEntity update(MembershipCardEntity membershipCard, int ownerId) {
-        membershipCard.setOwner(personRepository.findById(ownerId).get());
+        membershipCard.setOwner(personRepository.findById(ownerId).orElseThrow(PersonNotFoundException::new));
         membershipCard.setUpdated(LocalDateTime.now());
         membershipCard.setCreated(membershipCardRepository.getCreatedDateById(membershipCard.getId()));
         return membershipCardRepository.save(membershipCard);
     }
-
     @Transactional
-    public void delete(int ownerId, int id) {
-        MembershipCardEntity membershipCard = new MembershipCardEntity();
-        membershipCard.setId(id);
-        PersonEntity owner = new PersonEntity();
-        owner.setId(ownerId);
-        membershipCard.setOwner(owner);
-        membershipCardRepository.delete(membershipCard);
+    public boolean delete(PersonEntity owner, int id) {
+        return membershipCardRepository.deleteByOwnerAndId(personRepository.findById(id).orElseThrow(PersonNotFoundException::new),id);
     }
 
+    public List<MembershipCardEntity> findByOwnerId(int ownerId) {
+        return membershipCardRepository.getMembershipCardsByOwner(ownerId);
+    }
 
+    public Optional<MembershipCardEntity> findById(int id) {
+        return membershipCardRepository.findById(id);
+    }
+
+    public Optional<MembershipCardEntity> findByCardNumber(int cardNumber) {
+        return membershipCardRepository.findMembershipCardEntityByCardNumber(cardNumber);
+    }
 }

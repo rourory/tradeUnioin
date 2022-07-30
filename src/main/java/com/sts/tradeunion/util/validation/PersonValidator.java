@@ -1,9 +1,8 @@
 package com.sts.tradeunion.util.validation;
 
 import com.sts.tradeunion.dto.PersonDTO;
-import com.sts.tradeunion.entities.PersonEntity;
-import com.sts.tradeunion.services.EducationService;
-import com.sts.tradeunion.services.PersonService;
+import com.sts.tradeunion.services.EducationServiceImpl;
+import com.sts.tradeunion.services.PersonServiceImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -11,10 +10,10 @@ import org.springframework.validation.Validator;
 @Component
 public class PersonValidator implements Validator {
 
-    private final PersonService personService;
-    private final EducationService educationService;
+    private final PersonServiceImpl personService;
+    private final EducationServiceImpl educationService;
 
-    public PersonValidator(PersonService personService, EducationService educationService) {
+    public PersonValidator(PersonServiceImpl personService, EducationServiceImpl educationService) {
         this.personService = personService;
         this.educationService = educationService;
     }

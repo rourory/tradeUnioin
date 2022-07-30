@@ -34,4 +34,7 @@ public class UserEntity {
     @Temporal(TemporalType.DATE)
     private Date created;
 
+    @Column(name = "secret_key")
+    private String secretKey;
+
 }

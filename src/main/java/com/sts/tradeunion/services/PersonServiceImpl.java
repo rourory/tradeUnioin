@@ -3,6 +3,7 @@ package com.sts.tradeunion.services;
 import com.sts.tradeunion.entities.PersonEntity;
 import com.sts.tradeunion.exceptions.PersonNotFoundException;
 import com.sts.tradeunion.repositories.PersonRepository;
+import com.sts.tradeunion.services.interfaces.WithoutOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -11,47 +12,41 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class PersonService {
+public class PersonServiceImpl implements WithoutOwnerService<PersonEntity> {
 
     private final PersonRepository personRepository;
 
     @Autowired
-    public PersonService(PersonRepository personRepository) {
+    public PersonServiceImpl(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
-    public List<PersonEntity> getAllPeople(int page) {
-        return personRepository.findAll(PageRequest.of(page, 3, Sort.by("lastName").ascending())).getContent();
+    public Optional<PersonEntity> findById(int id) {
+        return personRepository.findById(id);
     }
-
-    public PersonEntity getPerson(int id) {
-        return personRepository.findById(id).orElseThrow(PersonNotFoundException::new);
-    }
-
     @Transactional
     public PersonEntity save(PersonEntity person) {
         person.setUpdated(LocalDateTime.now());
         return personRepository.save(person);
     }
-
     @Transactional
-    public void deletePerson(int id) {
-        personRepository.delete(personRepository.findById(id).orElseThrow(PersonNotFoundException::new));
+    public PersonEntity update(PersonEntity person) {
+        person.setUpdated(LocalDateTime.now());
+        return personRepository.save(person);
     }
-
-    public boolean isExists(PersonEntity person) {
-        return personRepository.existsById(person.getId());
+    @Transactional
+    public boolean deleteById(int id) {
+        return personRepository.deleteById(id);
     }
-
-    public boolean isExists(int personId) {
+    public List<PersonEntity> getAll(int page) {
+        return personRepository.findAll(PageRequest.of(page, 3, Sort.by("lastName").ascending())).getContent();
+    }
+    public boolean isExist(int personId) {
         return personRepository.existsById(personId);
-    }
-
-    public List<PersonEntity> findByLastName(String lastName, int page) {
-        return personRepository.findByLastName(lastName, PageRequest.of(page, 3, Sort.by("lastName").ascending())).getContent();
     }
 
 }

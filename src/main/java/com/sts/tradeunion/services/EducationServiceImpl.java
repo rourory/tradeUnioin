@@ -2,6 +2,7 @@ package com.sts.tradeunion.services;
 
 import com.sts.tradeunion.entities.сlassification.EducationClassificationEntity;
 import com.sts.tradeunion.repositories.EducationRepository;
+import com.sts.tradeunion.services.interfaces.WithoutOwnerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,34 +11,36 @@ import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
-public class EducationService {
+public class EducationServiceImpl implements WithoutOwnerService<EducationClassificationEntity> {
 
     private final EducationRepository educationRepository;
 
-    public EducationService(EducationRepository educationRepository) {
+    public EducationServiceImpl(EducationRepository educationRepository) {
         this.educationRepository = educationRepository;
     }
 
-    public Optional<EducationClassificationEntity> findByName(String name){
+    public Optional<EducationClassificationEntity> findById(int id) {
+        return educationRepository.findById(id);
+    }
+
+    @Transactional
+    public EducationClassificationEntity save(EducationClassificationEntity education) {
+        education.setUpdated(LocalDateTime.now());
+        return educationRepository.save(education);
+    }
+
+    @Transactional
+    public EducationClassificationEntity update(EducationClassificationEntity education) {
+        education.setUpdated(LocalDateTime.now());
+        return educationRepository.save(education);
+    }
+
+    @Transactional
+    public boolean deleteById(int id) {
+        return educationRepository.deleteById(id);
+    }
+
+    public Optional<EducationClassificationEntity> findByName(String name) {
         return educationRepository.findByName(name);
-    }
-
-    @Transactional
-    public EducationClassificationEntity save(EducationClassificationEntity education, int ownerId) {
-        education.setUpdated(LocalDateTime.now());
-        return educationRepository.save(education);
-    }
-
-    @Transactional
-    public EducationClassificationEntity update(EducationClassificationEntity education, int ownerId) {
-        education.setUpdated(LocalDateTime.now());
-        return educationRepository.save(education);
-    }
-
-    @Transactional
-    public void delete(int id) {
-        EducationClassificationEntity education = new EducationClassificationEntity();
-        education.setId(id);
-        educationRepository.delete(education);
     }
 }

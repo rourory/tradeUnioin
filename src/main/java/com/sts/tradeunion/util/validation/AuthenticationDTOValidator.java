@@ -1,7 +1,7 @@
 package com.sts.tradeunion.util.validation;
 
 import com.sts.tradeunion.dto.AuthenticationDTO;
-import com.sts.tradeunion.services.UserService;
+import com.sts.tradeunion.services.UserServiceImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -9,9 +9,9 @@ import org.springframework.validation.Validator;
 @Component
 public class AuthenticationDTOValidator implements Validator {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public AuthenticationDTOValidator(UserService userService) {
+    public AuthenticationDTOValidator(UserServiceImpl userService) {
         this.userService = userService;
     }
 

@@ -1,5 +1,6 @@
 package com.sts.tradeunion.repositories;
 
+import com.sts.tradeunion.entities.PersonEntity;
 import com.sts.tradeunion.entities.docs.PaymentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +16,5 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity,Integer> 
     @Query(value = "SELECT created FROM doc_payment AS dp WHERE dp.id = ?1", nativeQuery = true)
     Date getCreatedDateById(int id);
 
+    boolean deleteByOwnerAndId(PersonEntity owner, int id);
 }
