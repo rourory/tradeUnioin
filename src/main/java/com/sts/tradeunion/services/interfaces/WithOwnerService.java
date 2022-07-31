@@ -1,9 +1,7 @@
 package com.sts.tradeunion.services.interfaces;
 
-import com.sts.tradeunion.dto.PersonDTO;
-import com.sts.tradeunion.entities.PersonEntity;
-
 import java.util.List;
+
 
 public interface WithOwnerService<T> extends Service<T> {
 

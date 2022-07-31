@@ -1,6 +1,5 @@
 package com.sts.tradeunion.services;
 
-import com.sts.tradeunion.entities.PersonEntity;
 import com.sts.tradeunion.entities.docs.PaymentEntity;
 import com.sts.tradeunion.exceptions.PersonNotFoundException;
 import com.sts.tradeunion.repositories.PaymentRepository;
@@ -34,7 +33,7 @@ public class PaymentServiceImpl implements WithOwnerService<PaymentEntity> {
 
     @Transactional
     public PaymentEntity save(PaymentEntity payment, int ownerId) {
-        payment.setOwner(personRepository.findById(ownerId).orElseThrow(PersonNotFoundException::new));
+        payment.setOwner(personRepository.findById(ownerId).orElseThrow(() -> new PersonNotFoundException(ownerId)));
         payment.setUpdated(LocalDateTime.now());
         payment.setCreated(new Date());
         return paymentRepository.save(payment);
@@ -42,7 +41,7 @@ public class PaymentServiceImpl implements WithOwnerService<PaymentEntity> {
 
     @Transactional
     public PaymentEntity update(PaymentEntity payment, int ownerId) {
-        payment.setOwner(personRepository.findById(ownerId).orElseThrow(PersonNotFoundException::new));
+        payment.setOwner(personRepository.findById(ownerId).orElseThrow(() -> new PersonNotFoundException(ownerId)));
         payment.setUpdated(LocalDateTime.now());
         payment.setCreated(paymentRepository.getCreatedDateById(payment.getId()));
         return paymentRepository.save(payment);
@@ -50,7 +49,9 @@ public class PaymentServiceImpl implements WithOwnerService<PaymentEntity> {
 
     @Transactional
     public boolean delete(int ownerId, int id) {
-        return paymentRepository.deleteByOwnerAndId(personRepository.findById(ownerId).orElseThrow(PersonNotFoundException::new), id);
+        return paymentRepository
+                .deleteByOwnerAndId(personRepository.findById(ownerId)
+                        .orElseThrow(() -> new PersonNotFoundException(ownerId)), id);
     }
 
     public List<PaymentEntity> findByOwnerId(int ownerId) {

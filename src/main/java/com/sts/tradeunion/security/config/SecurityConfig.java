@@ -5,6 +5,7 @@ import com.sts.tradeunion.security.jwt.JWTFilter;
 import com.sts.tradeunion.security.jwt.JwtAuthenticationEntryPoint;
 import com.sts.tradeunion.services.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+@Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {

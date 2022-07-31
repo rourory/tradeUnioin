@@ -1,7 +1,6 @@
 package com.sts.tradeunion.services;
 
 import com.sts.tradeunion.entities.PersonEntity;
-import com.sts.tradeunion.exceptions.PersonNotFoundException;
 import com.sts.tradeunion.repositories.PersonRepository;
 import com.sts.tradeunion.services.interfaces.WithoutOwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,23 +27,28 @@ public class PersonServiceImpl implements WithoutOwnerService<PersonEntity> {
     public Optional<PersonEntity> findById(int id) {
         return personRepository.findById(id);
     }
+
     @Transactional
     public PersonEntity save(PersonEntity person) {
         person.setUpdated(LocalDateTime.now());
         return personRepository.save(person);
     }
+
     @Transactional
     public PersonEntity update(PersonEntity person) {
         person.setUpdated(LocalDateTime.now());
         return personRepository.save(person);
     }
+
     @Transactional
     public boolean deleteById(int id) {
         return personRepository.deleteById(id);
     }
+
     public List<PersonEntity> getAll(int page) {
         return personRepository.findAll(PageRequest.of(page, 3, Sort.by("lastName").ascending())).getContent();
     }
+
     public boolean isExist(int personId) {
         return personRepository.existsById(personId);
     }

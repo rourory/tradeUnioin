@@ -1,6 +1,7 @@
 package com.sts.tradeunion.util;
 
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
+import com.sts.tradeunion.exceptions.PersonNotFoundException;
 import com.sts.tradeunion.util.validation.responce.EntityValidResponse;
 import com.sts.tradeunion.util.validation.responce.EntityValidViolation;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class ExceptionHandlerAdvice {
      * Метод обрабатывает каждое поле валидируемого объекта на предмет наличия в объекте {@link org.springframework.validation.BindingResult} ошибок для поля,
      * соответсвующего имени поля валидируемого объекта
      * <p>
+     *
      * @param validException объект исключения, хранящего в себе инофрмацию о валидируемом объекте,
      *                       наследнике абстрактного класса({@link com.sts.tradeunion.dto.AbstractDTO}) и об объекте
      *                       класса {@link org.springframework.validation.BindingResult}, содержащего, в свою очередь,
@@ -52,6 +54,18 @@ public class ExceptionHandlerAdvice {
         }
         return new ResponseEntity<>(new EntityValidResponse(violations), HttpStatus.BAD_REQUEST);
 
+    }
+
+    /**
+     * Метод обрабатывает ошибку, возникающую в случае отсутствия в базе данных объекта класса {@link com.sts.tradeunion.entities.PersonEntity}
+     * с указанным Id.
+     * @param notFoundException ошибка, выбрасываемая в случает остутствия пользователя в базе данных
+     * @return ответ в виде строки с ошибкой и указанием id искомого объекта
+     */
+    @ExceptionHandler
+    private ResponseEntity<String> personNotFoundException(PersonNotFoundException notFoundException) {
+        return new ResponseEntity<>("Пользователь с id = " + notFoundException.getEntityId() + " не найден"
+                , HttpStatus.NOT_FOUND);
     }
 
 }

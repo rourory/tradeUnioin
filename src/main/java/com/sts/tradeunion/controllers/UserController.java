@@ -63,7 +63,7 @@ public class UserController {
             return Map.of("message", "Неверные данные пользователя");
         }
         String token = jwtUtil.generateToken(user.getUsername(),
-                userDetails.getAuthorities().stream().findFirst().orElseThrow(PersonNotFoundException::new).getAuthority());
+                userDetails.getAuthorities().stream().findFirst().orElseThrow().getAuthority());
         System.out.println("LOGIN SUCCESS");
         return Map.of("jwt-token", token);
     }

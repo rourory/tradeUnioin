@@ -71,7 +71,9 @@ public class PaymentController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
             , dataTypeClass = String.class, example = "Bearer XXX_access_token")
     public ResponseEntity<HttpStatus> delete(@PathVariable(value = "id") int ownerId, @RequestParam("paymentId") int id) {
-        paymentService.delete(ownerId,id);
+        if (!paymentService.delete(ownerId, id))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(HttpStatus.OK);
+
     }
 }

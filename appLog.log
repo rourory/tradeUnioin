@@ -1,0 +1,35 @@
+2022-07-31 14:28:08.731  INFO 16412 --- [main] c.sts.tradeunion.TradeUnionApplication   : Starting TradeUnionApplication on vit6 with PID 16412 (C:\Users\Admin\IdeaProjects\TradeUnion\target\classes started by Admin in C:\Users\Admin\IdeaProjects\TradeUnion)
+2022-07-31 14:28:08.736  INFO 16412 --- [main] c.sts.tradeunion.TradeUnionApplication   : No active profile set, falling back to default profiles: default
+2022-07-31 14:28:10.949  INFO 16412 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFERRED mode.
+2022-07-31 14:28:11.200  INFO 16412 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 229ms. Found 7 JPA repository interfaces.
+2022-07-31 14:28:11.969  INFO 16412 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@5a058be5' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-07-31 14:28:11.983  INFO 16412 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-07-31 14:28:12.411  INFO 16412 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2022-07-31 14:28:12.429  INFO 16412 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2022-07-31 14:28:12.430  INFO 16412 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.37]
+2022-07-31 14:28:12.622  INFO 16412 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2022-07-31 14:28:12.623  INFO 16412 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3778 ms
+2022-07-31 14:28:12.988  INFO 16412 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2022-07-31 14:28:13.012  INFO 16412 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2022-07-31 14:28:13.303  INFO 16412 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2022-07-31 14:28:13.410  INFO 16412 --- [task-1] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-07-31 14:28:13.517  INFO 16412 --- [task-1] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.4.20.Final
+2022-07-31 14:28:14.887  INFO 16412 --- [task-1] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2022-07-31 14:28:15.028  WARN 16412 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-07-31 14:28:15.556  INFO 16412 --- [task-1] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2022-07-31 14:28:17.478  INFO 16412 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@64ed18ec, org.springframework.security.web.context.SecurityContextPersistenceFilter@3722f39d, org.springframework.security.web.header.HeaderWriterFilter@3fd5d679, org.springframework.web.filter.CorsFilter@1dfcf85a, org.springframework.security.web.authentication.logout.LogoutFilter@df9d400, com.sts.tradeunion.security.jwt.JWTFilter@6d294ddc, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@57b63253, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2ce47652, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@590dea35, org.springframework.security.web.session.SessionManagementFilter@4e8afdad, org.springframework.security.web.access.ExceptionTranslationFilter@428eb3d5, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@11d1735e]
+2022-07-31 14:28:18.495  INFO 16412 --- [task-1] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-07-31 14:28:18.516  INFO 16412 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2022-07-31 14:28:18.532  INFO 16412 --- [task-1] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-07-31 14:28:19.835  INFO 16412 --- [main] DeferredRepositoryInitializationListener : Triggering deferred initialization of Spring Data repositories…
+2022-07-31 14:28:21.775  INFO 16412 --- [main] DeferredRepositoryInitializationListener : Spring Data repositories initialized!
+2022-07-31 14:28:21.797  INFO 16412 --- [main] c.sts.tradeunion.TradeUnionApplication   : Started TradeUnionApplication in 13.714 seconds (JVM running for 15.14)
+2022-07-31 14:28:23.516  INFO 16412 --- [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-07-31 14:28:23.517  INFO 16412 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-07-31 14:28:23.534  INFO 16412 --- [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 17 ms
+2022-07-31 14:28:24.483  INFO 16412 --- [http-nio-8080-exec-2] c.s.t.aspect.logging.LoggingAspect       : START
+2022-07-31 14:28:24.567  INFO 16412 --- [http-nio-8080-exec-2] c.s.t.aspect.logging.LoggingAspect       : END
+2022-07-31 14:28:33.925  INFO 16412 --- [SpringContextShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-07-31 14:28:33.929  INFO 16412 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2022-07-31 14:28:33.929  INFO 16412 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2022-07-31 14:28:33.950  INFO 16412 --- [SpringContextShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

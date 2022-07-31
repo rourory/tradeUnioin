@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
-import java.util.Random;
 
 /**
  * Service класс для работы с сущностью {@link UserEntity}. Это особый service класс, необходимый для работы
