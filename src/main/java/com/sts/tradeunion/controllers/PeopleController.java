@@ -3,6 +3,7 @@ package com.sts.tradeunion.controllers;
 import com.sts.tradeunion.dto.PersonDTO;
 import com.sts.tradeunion.entities.PersonEntity;
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
+import com.sts.tradeunion.exceptions.PersonNotFoundException;
 import com.sts.tradeunion.services.PersonServiceImpl;
 import com.sts.tradeunion.util.validation.PersonValidator;
 import io.swagger.annotations.ApiImplicitParam;
@@ -47,15 +48,16 @@ public class PeopleController {
     @GetMapping("/{id}")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
             , dataTypeClass = String.class, example = "Bearer XXX_access_token")
-    public PersonDTO getPerson(@PathVariable int id) {
-        return modelMapper.map(personService.findById(id), PersonDTO.class);
+    public PersonDTO get(@PathVariable int id) {
+        return modelMapper.map(personService
+                .findById(id).orElseThrow(() -> new PersonNotFoundException(id)),PersonDTO.class);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
             , dataTypeClass = String.class, example = "Bearer XXX_access_token")
-    public ResponseEntity<Object> createPerson(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult) {
+    public ResponseEntity<Object> save(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult) {
         personValidator.validate(personDTO, bindingResult);
         if (bindingResult.hasErrors()) throw new EntityIsNotValidException(bindingResult, personDTO);
         return new ResponseEntity<>(modelMapper.map(personService
@@ -66,7 +68,7 @@ public class PeopleController {
     @PutMapping
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
             , dataTypeClass = String.class, example = "Bearer XXX_access_token")
-    public ResponseEntity<PersonDTO> updatePerson(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult) {
+    public ResponseEntity<PersonDTO> update(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult) {
         personValidator.validate(personDTO, bindingResult);
         if (bindingResult.hasErrors()) throw new EntityIsNotValidException(bindingResult, personDTO);
         return new ResponseEntity<>(modelMapper.map(personService
@@ -77,9 +79,9 @@ public class PeopleController {
     @DeleteMapping
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
             , dataTypeClass = String.class, example = "Bearer XXX_access_token")
-    public ResponseEntity<HttpStatus> deletePerson(@RequestParam("id") int id) {
+    public ResponseEntity<HttpStatus> delete(@RequestParam("id") int id) {
         if (personService.deleteById(id))
-        personService.deleteById(id);
+            personService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

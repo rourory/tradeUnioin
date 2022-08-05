@@ -1,6 +1,6 @@
 package com.sts.tradeunion.services;
 
-import com.sts.tradeunion.entities.docs.PaymentEntity;
+import com.sts.tradeunion.entities.PaymentEntity;
 import com.sts.tradeunion.exceptions.PersonNotFoundException;
 import com.sts.tradeunion.repositories.PaymentRepository;
 import com.sts.tradeunion.repositories.PersonRepository;

@@ -1,7 +1,7 @@
 package com.sts.tradeunion.controllers;
 
 import com.sts.tradeunion.dto.PaymentDTO;
-import com.sts.tradeunion.entities.docs.PaymentEntity;
+import com.sts.tradeunion.entities.PaymentEntity;
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
 import com.sts.tradeunion.services.PaymentServiceImpl;
 import com.sts.tradeunion.util.validation.PaymentValidator;
@@ -35,7 +35,7 @@ public class PaymentController {
     @GetMapping
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
             , dataTypeClass = String.class, example = "Bearer XXX_access_token")
-    public ResponseEntity<List<PaymentDTO>> getOwnersMembershipCards(@PathVariable int id) {
+    public ResponseEntity<List<PaymentDTO>> getByOwner(@PathVariable int id) {
         List<PaymentDTO> payments = new ArrayList<>();
         paymentService.findByOwnerId(id)
                 .forEach(payment -> payments.add(modelMapper.map(payment, PaymentDTO.class)));

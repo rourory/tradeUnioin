@@ -1,7 +1,7 @@
 package com.sts.tradeunion.repositories;
 
 import com.sts.tradeunion.entities.PersonEntity;
-import com.sts.tradeunion.entities.docs.MembershipCardEntity;
+import com.sts.tradeunion.entities.MembershipCardEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

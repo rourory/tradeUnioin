@@ -1,9 +1,6 @@
 package com.sts.tradeunion.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sts.tradeunion.entities.docs.LaborContractEntity;
-import com.sts.tradeunion.entities.docs.MembershipCardEntity;
-import com.sts.tradeunion.entities.docs.PaymentEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,12 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "person")
-public class PersonEntity{
-
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class PersonEntity extends AbstractEntity {
 
     @Column(name = "ln")
     private String lastName;

@@ -1,6 +1,6 @@
 package com.sts.tradeunion.services;
 
-import com.sts.tradeunion.entities.docs.LaborContractEntity;
+import com.sts.tradeunion.entities.LaborContractEntity;
 import com.sts.tradeunion.exceptions.PersonNotFoundException;
 import com.sts.tradeunion.repositories.LaborContractRepository;
 import com.sts.tradeunion.repositories.PersonRepository;

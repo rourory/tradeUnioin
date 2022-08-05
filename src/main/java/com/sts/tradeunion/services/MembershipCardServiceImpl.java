@@ -1,6 +1,6 @@
 package com.sts.tradeunion.services;
 
-import com.sts.tradeunion.entities.docs.MembershipCardEntity;
+import com.sts.tradeunion.entities.MembershipCardEntity;
 import com.sts.tradeunion.exceptions.PersonNotFoundException;
 import com.sts.tradeunion.repositories.MembershipCardRepository;
 import com.sts.tradeunion.repositories.PersonRepository;

@@ -1,7 +1,7 @@
 package com.sts.tradeunion.repositories;
 
 import com.sts.tradeunion.entities.PersonEntity;
-import com.sts.tradeunion.entities.docs.LaborContractEntity;
+import com.sts.tradeunion.entities.LaborContractEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

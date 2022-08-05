@@ -9,11 +9,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "users")
-public class UserEntity {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class UserEntity extends AbstractEntity {
 
     @Column(name = "username")
     private String username;

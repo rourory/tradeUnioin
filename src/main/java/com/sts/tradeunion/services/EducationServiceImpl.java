@@ -1,6 +1,6 @@
 package com.sts.tradeunion.services;
 
-import com.sts.tradeunion.entities.сlassification.EducationClassificationEntity;
+import com.sts.tradeunion.entities.EducationClassificationEntity;
 import com.sts.tradeunion.repositories.EducationRepository;
 import com.sts.tradeunion.services.interfaces.WithoutOwnerService;
 import org.springframework.stereotype.Service;

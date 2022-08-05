@@ -4,14 +4,19 @@ import com.sts.tradeunion.exceptions.EntityIsNotValidException;
 import com.sts.tradeunion.exceptions.PersonNotFoundException;
 import com.sts.tradeunion.util.validation.responce.EntityValidResponse;
 import com.sts.tradeunion.util.validation.responce.EntityValidViolation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -24,6 +29,8 @@ import java.util.List;
  */
 @ControllerAdvice
 public class ExceptionHandlerAdvice {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * Метод обрабатывает каждое поле валидируемого объекта на предмет наличия в объекте {@link org.springframework.validation.BindingResult} ошибок для поля,
@@ -45,11 +52,16 @@ public class ExceptionHandlerAdvice {
 
         Arrays.stream(validException.getAbstractDTO().getClass().getDeclaredFields()).forEach(field -> fieldNames.add(field.getName()));
 
+        logger.warn("Ошибка валидации. Валидируемые поля: {}" , String.join(", ", fieldNames));
         for (String fieldName : fieldNames) {
             if (validException.getBindingResult().hasFieldErrors(fieldName)) {
-                List<String> fieldErrors = new ArrayList<>();
-                validException.getBindingResult().getFieldErrors(fieldName).forEach(error -> fieldErrors.add(error.getDefaultMessage()));
-                violations.add(new EntityValidViolation(fieldName, fieldErrors));
+                List<String> errorMessages = new ArrayList<>();
+                validException.getBindingResult().getFieldErrors(fieldName).forEach(error -> errorMessages.add(error.getDefaultMessage()));
+                violations.add(new EntityValidViolation(fieldName, errorMessages));
+                logger.warn("Поле: {}. Введенное значение: {}. Ошибки: {}. ",
+                        fieldName,
+                        validException.getBindingResult().getFieldErrors(fieldName).get(0).getRejectedValue().toString(),
+                        String.join(", ", errorMessages));
             }
         }
         return new ResponseEntity<>(new EntityValidResponse(violations), HttpStatus.BAD_REQUEST);
@@ -64,6 +76,7 @@ public class ExceptionHandlerAdvice {
      */
     @ExceptionHandler
     private ResponseEntity<String> personNotFoundException(PersonNotFoundException notFoundException) {
+        logger.warn("Пользователь с id = {} не найден", notFoundException.getEntityId());
         return new ResponseEntity<>("Пользователь с id = " + notFoundException.getEntityId() + " не найден"
                 , HttpStatus.NOT_FOUND);
     }

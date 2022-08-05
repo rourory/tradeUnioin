@@ -1,4 +1,4 @@
-package com.sts.tradeunion.entities.сlassification;
+package com.sts.tradeunion.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,12 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "class_education")
-public class EducationClassificationEntity {
-
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class EducationClassificationEntity extends AbstractEntity {
 
     @Column(name="name")
     private String name;

@@ -1,11 +1,12 @@
 package com.sts.tradeunion.dto;
 
+import com.sts.tradeunion.entities.TradeUnionClassificationEntity;
 import lombok.Data;
 
 import javax.validation.constraints.Size;
 
 /**
- * DTO над {@link com.sts.tradeunion.entities.сlassification.TradeUnionClassificationEntity}.
+ * DTO над {@link TradeUnionClassificationEntity}.
  * Валидация осуществляется при помощи {@link javax.validation.constraints}
  */
 @Data

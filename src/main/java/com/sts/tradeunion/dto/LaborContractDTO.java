@@ -1,5 +1,6 @@
 package com.sts.tradeunion.dto;
 
+import com.sts.tradeunion.entities.LaborContractEntity;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -8,7 +9,7 @@ import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 /**
- * DTO над {@link com.sts.tradeunion.entities.docs.LaborContractEntity}.
+ * DTO над {@link LaborContractEntity}.
  * Валидация осуществляется как при помощи {@link javax.validation.constraints}, так и при помощи
  * реализации интерфейса {@link org.springframework.validation.Validator}.
  * @see com.sts.tradeunion.util.validation.LaborContractValidator

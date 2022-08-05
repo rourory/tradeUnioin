@@ -1,7 +1,7 @@
 package com.sts.tradeunion.controllers;
 
 import com.sts.tradeunion.dto.LaborContractDTO;
-import com.sts.tradeunion.entities.docs.LaborContractEntity;
+import com.sts.tradeunion.entities.LaborContractEntity;
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
 import com.sts.tradeunion.services.LaborContractServiceImpl;
 import com.sts.tradeunion.util.validation.LaborContractValidator;
@@ -35,7 +35,7 @@ public class LaborContractController {
     @GetMapping
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
             , dataTypeClass = String.class, example = "Bearer XXX_access_token")
-    public ResponseEntity<List<LaborContractDTO>> getOwnersMembershipCards(@PathVariable int id) {
+    public ResponseEntity<List<LaborContractDTO>> getByOwner(@PathVariable int id) {
         List<LaborContractDTO> laborContracts = new ArrayList<>();
         laborContractService.findByOwnerId(id)
                 .forEach(laborContractEntity -> laborContracts.add(modelMapper.map(laborContractEntity, LaborContractDTO.class)));

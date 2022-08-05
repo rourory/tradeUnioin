@@ -1,6 +1,6 @@
 package com.sts.tradeunion.repositories;
 
-import com.sts.tradeunion.entities.сlassification.TradeUnionClassificationEntity;
+import com.sts.tradeunion.entities.TradeUnionClassificationEntity;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

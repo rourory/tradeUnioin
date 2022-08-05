@@ -4,11 +4,12 @@ import com.sts.tradeunion.dto.AuthenticationDTO;
 import com.sts.tradeunion.dto.UserDTO;
 import com.sts.tradeunion.entities.UserEntity;
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
-import com.sts.tradeunion.exceptions.PersonNotFoundException;
 import com.sts.tradeunion.security.jwt.JWTUtil;
 import com.sts.tradeunion.services.UserServiceImpl;
 import com.sts.tradeunion.util.validation.AuthenticationDTOValidator;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,6 +35,8 @@ public class UserController {
     private final ModelMapper modelMapper;
     private final JWTUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public UserController(AuthenticationDTOValidator validator, UserServiceImpl userService, ModelMapper modelMapper, JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.validator = validator;
@@ -45,8 +49,10 @@ public class UserController {
     @PostMapping("/registration")
     public ResponseEntity<UserDTO> performRegistration(@RequestBody @Valid AuthenticationDTO user, BindingResult bindingResult) {
         validator.validate(user, bindingResult);
-        if (bindingResult.hasErrors())
-            throw new EntityIsNotValidException(bindingResult, user);
+        logger.info("Регистрация пользователя {}", user.getUsername());
+        if (bindingResult.hasErrors()){
+            throw new EntityIsNotValidException(bindingResult, user);}
+        logger.info("Регистрация пользователя {} произведена успешно", user.getUsername());
         return new ResponseEntity<>(modelMapper
                 .map(userService.register(modelMapper.map(user, UserEntity.class)), UserDTO.class), HttpStatus.OK);
     }
@@ -57,14 +63,16 @@ public class UserController {
         UsernamePasswordAuthenticationToken authenticationInputToken =
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
         try {
+            logger.info("Аутентификация пользователя {}", user.getUsername());
             authenticationManager.authenticate(authenticationInputToken);
             userDetails = userService.loadUserByUsername(user.getUsername());
         } catch (BadCredentialsException e) {
+            logger.info("Пользователь {} ввел некорректные данные", user.getUsername());
             return Map.of("message", "Неверные данные пользователя");
         }
         String token = jwtUtil.generateToken(user.getUsername(),
                 userDetails.getAuthorities().stream().findFirst().orElseThrow().getAuthority());
-        System.out.println("LOGIN SUCCESS");
+        logger.info("Аутентификация пользователя {} произведена успешно", userDetails.getUsername());
         return Map.of("jwt-token", token);
     }
 

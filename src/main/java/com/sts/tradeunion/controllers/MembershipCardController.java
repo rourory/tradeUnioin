@@ -1,7 +1,7 @@
 package com.sts.tradeunion.controllers;
 
 import com.sts.tradeunion.dto.MembershipCardDTO;
-import com.sts.tradeunion.entities.docs.MembershipCardEntity;
+import com.sts.tradeunion.entities.MembershipCardEntity;
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
 import com.sts.tradeunion.services.MembershipCardServiceImpl;
 import com.sts.tradeunion.util.validation.MembershipCardValidator;
@@ -35,7 +35,7 @@ public class MembershipCardController {
     @GetMapping
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
             , dataTypeClass = String.class, example = "Bearer XXX_access_token")
-    public ResponseEntity<List<MembershipCardDTO>> getOwnersMembershipCards(@PathVariable int id) {
+    public ResponseEntity<List<MembershipCardDTO>> getByOwner(@PathVariable int id) {
         List<MembershipCardDTO> membershipCards = new ArrayList<>();
         membershipCardService.findByOwnerId(id)
                 .forEach(membershipCardEntity -> membershipCards.add(modelMapper.map(membershipCardEntity, MembershipCardDTO.class)));

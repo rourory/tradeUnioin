@@ -1,8 +1,7 @@
-package com.sts.tradeunion.entities.docs;
+package com.sts.tradeunion.entities;
 
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sts.tradeunion.entities.PersonEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,16 +13,10 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "doc_payment")
-public class PaymentEntity{
-
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class PaymentEntity extends AbstractEntity {
 
     @Column(name = "created")
     private Date created;
-
     @Column(name = "finished")
     @Temporal(TemporalType.DATE)
     private Date finished;

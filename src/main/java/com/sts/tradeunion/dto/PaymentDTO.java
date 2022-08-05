@@ -1,15 +1,16 @@
 package com.sts.tradeunion.dto;
 
+import com.sts.tradeunion.entities.PaymentEntity;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * DTO над {@link com.sts.tradeunion.entities.docs.PaymentEntity}.
+ * DTO над {@link PaymentEntity}.
  * Валидация осуществляется как при помощи {@link javax.validation.constraints}, так и при помощи
  * реализации интерфейса {@link org.springframework.validation.Validator}.
- * @see com.sts.tradeunion.entities.docs.PaymentEntity
+ * @see PaymentEntity
  */
 @Data
 public class PaymentDTO extends AbstractDTO{

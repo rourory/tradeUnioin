@@ -1,7 +1,6 @@
-package com.sts.tradeunion.entities.docs;
+package com.sts.tradeunion.entities;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sts.tradeunion.entities.PersonEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,42 +11,43 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "doc_job")
-public class LaborContractEntity{
+@Table(name = "doc_member")
+public class MembershipCardEntity extends AbstractEntity {
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(name = "place")
-    private String place;
-
-    @Column(name = "post")
-    private String post;
+    @Column(name = "num")
+    private int cardNumber;
 
     @Column(name = "created")
     private Date created;
 
+    @Temporal(TemporalType.DATE)
+    @Column(name = "completed")
+    private Date completed;
+
+    @Temporal(TemporalType.DATE)
     @Column(name = "finished")
     private Date finished;
 
-    @Column(name = "updated")
-    private LocalDateTime updated;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonSerialize(typing = JsonSerialize.Typing.STATIC)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity owner;
 
+    @Column(name = "org_id")
+    private int tradeUnionId;
+
+    @Column(name = "updated")
+    private LocalDateTime updated;
+
     @Override
     public String toString() {
-        return "LaborContractEntity{" +
+        return "MembershipCardEntity{" +
                 "id=" + id +
-                ", place='" + place + '\'' +
-                ", post='" + post + '\'' +
+                ", cardNumber=" + cardNumber +
                 ", created=" + created +
+                ", completed=" + completed +
                 ", finished=" + finished +
+                ", tradeUnion=" + tradeUnionId +
                 ", updated=" + updated +
                 '}';
     }

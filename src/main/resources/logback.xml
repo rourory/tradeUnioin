@@ -13,6 +13,7 @@
 
     <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOGS}/back.log</file>
+
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
         </encoder>
@@ -22,9 +23,10 @@
             <fileNamePattern>${LOGS}/archived/back-%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>5MB</maxFileSize>
+                <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
+
     </appender>
 
     <!-- LOG everything at WARN level -->
@@ -34,9 +36,9 @@
     </root>
 
     <!-- LOG at TRACE level -->
-    <logger name="org.web" level="trace" additivity="false">
-        <appender-ref ref="RollingFile"/>
-        <appender-ref ref="Console"/>
-    </logger>
+<!--    <logger name="org.web" level="trace" additivity="false">-->
+<!--        <appender-ref ref="RollingFile"/>-->
+<!--        <appender-ref ref="Console"/>-->
+<!--    </logger>-->
 
 </configuration>
