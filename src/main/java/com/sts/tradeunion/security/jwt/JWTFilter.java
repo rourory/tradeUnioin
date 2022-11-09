@@ -65,7 +65,7 @@ public class JWTFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
                 response.addHeader(Constants.HEADER_STRING, Constants.TOKEN_PREFIX + jwtUtil.generateToken(claims.get("username"),claims.get("role")));
-
+                response.addHeader("Access-Control-Expose-Headers", "Authorization");
             } catch (JWTVerificationException e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,"Ошибка в процессе расшифровки JWT");
             }

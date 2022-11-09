@@ -1,6 +1,7 @@
 package com.sts.tradeunion.controllers;
 
 import com.sts.tradeunion.dto.PersonDTO;
+import com.sts.tradeunion.dto.ResponseEntityDTO;
 import com.sts.tradeunion.entities.PersonEntity;
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
 import com.sts.tradeunion.exceptions.PersonNotFoundException;
@@ -37,10 +38,9 @@ public class PeopleController {
     @GetMapping
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
             , dataTypeClass = String.class, example = "Bearer XXX_access_token")
-    public ResponseEntity<List<PersonDTO>> getPeople(@RequestParam("page") int page) {
+    public ResponseEntity<List<PersonDTO>> getBasicInfo() {
         List<PersonDTO> people = new ArrayList<>();
-        if (page > 0)
-            personService.getAll(page - 1).forEach(person -> people.add(modelMapper.map(person, PersonDTO.class)));
+            personService.getBasicInfoOfAllPeople().forEach(person -> people.add(modelMapper.map(person, PersonDTO.class)));
         return new ResponseEntity<>(people, HttpStatus.OK);
     }
 

@@ -17,10 +17,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -38,7 +35,8 @@ public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public UserController(AuthenticationDTOValidator validator, UserServiceImpl userService, ModelMapper modelMapper, JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
+    public UserController(AuthenticationDTOValidator validator, UserServiceImpl userService, ModelMapper modelMapper,
+                          JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.validator = validator;
         this.userService = userService;
         this.modelMapper = modelMapper;
@@ -73,7 +71,7 @@ public class UserController {
         String token = jwtUtil.generateToken(user.getUsername(),
                 userDetails.getAuthorities().stream().findFirst().orElseThrow().getAuthority());
         logger.info("Аутентификация пользователя {} произведена успешно", userDetails.getUsername());
-        return Map.of("jwt-token", token);
+        return Map.of("jwt_token", token);
     }
 
 }

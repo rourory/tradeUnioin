@@ -38,6 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
     }
 
+
+
     /**
      * <h2> Метод конфигурирует Security для таких случаев, как использование нестандартной логин-формы,
      * явное указание уровней доступа к определенным страницам, авторизацию и т.д.<p>
@@ -56,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors().and().csrf().disable()
+                .csrf().disable()
                 .authorizeRequests().antMatchers(HttpMethod.POST, "/auth/login", "/error", "/auth/registration", "/swagger-ui/**"
                         , "/dev.html", "/swagger-ui/index.html", "/v3/**", "/v3/api-docs/swagger-config").permitAll()
                 .and()
@@ -79,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 });
     }
 
+
     /**
      * <h2> Метод конфигурирует логику аутентификации.
      *
@@ -97,4 +100,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 }
