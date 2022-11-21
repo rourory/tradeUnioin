@@ -13,6 +13,4 @@ import java.util.List;
 
 @Repository
 public interface PersonRepository extends PagingAndSortingRepository<PersonEntity,Integer>{
-    boolean deleteById(int id);
-
 }

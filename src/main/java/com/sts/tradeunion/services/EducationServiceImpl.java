@@ -1,12 +1,15 @@
 package com.sts.tradeunion.services;
 
 import com.sts.tradeunion.entities.EducationClassificationEntity;
+import com.sts.tradeunion.entities.MaritalStateEntity;
 import com.sts.tradeunion.repositories.EducationRepository;
 import com.sts.tradeunion.services.interfaces.WithoutOwnerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +20,12 @@ public class EducationServiceImpl implements WithoutOwnerService<EducationClassi
 
     public EducationServiceImpl(EducationRepository educationRepository) {
         this.educationRepository = educationRepository;
+    }
+
+    public List<EducationClassificationEntity> getAll() {
+        List<EducationClassificationEntity> states = new ArrayList<>();
+        educationRepository.findAll().forEach(states::add);
+        return states;
     }
 
     public Optional<EducationClassificationEntity> findById(int id) {

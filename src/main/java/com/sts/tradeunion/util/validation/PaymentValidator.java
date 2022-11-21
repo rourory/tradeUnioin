@@ -33,11 +33,10 @@ public class PaymentValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         PaymentDTO payment = (PaymentDTO) target;
-
-        if (personService.isExist(payment.getOwner().getId()))
+        if (!personService.findById(payment.getOwner().getId()).isPresent())
             errors.rejectValue("owner", "", "Такого человека нет в базе");
         if (!tradeUnionService.findById(payment.getTradeUnionId()).isPresent())
-            errors.rejectValue("tradeUnionId", "", "Такого профсоюза нет в базе");
+            errors.rejectValue("tradeUnionId", "", "Такой организации нет в базе");
 
 
     }

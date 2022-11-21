@@ -12,8 +12,6 @@ import javax.validation.constraints.Size;
 @Data
 public class TradeUnionClassificationDTO extends AbstractDTO{
 
-    private int id;
-
     @Size(min = 5, max = 30, message = "Поле должно содержать не менее 5 и не более 30 символов")
     private String name;
 

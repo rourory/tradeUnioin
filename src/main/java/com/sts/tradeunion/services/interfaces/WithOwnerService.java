@@ -9,6 +9,6 @@ public interface WithOwnerService<T> extends Service<T> {
 
     T update (T entity, int ownerId);
 
-    boolean delete(int ownerId, int id);
+    boolean delete(int id);
     List<T> findByOwnerId(int ownerId);
 }

@@ -1,9 +1,12 @@
 package com.sts.tradeunion.controllers;
 
 import com.sts.tradeunion.dto.PaymentDTO;
+import com.sts.tradeunion.dto.PersonDTO;
 import com.sts.tradeunion.entities.PaymentEntity;
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
+import com.sts.tradeunion.exceptions.EntityNotFoundException;
 import com.sts.tradeunion.services.PaymentServiceImpl;
+import com.sts.tradeunion.services.PersonServiceImpl;
 import com.sts.tradeunion.util.validation.PaymentValidator;
 import io.swagger.annotations.ApiImplicitParam;
 import org.modelmapper.ModelMapper;
@@ -19,15 +22,18 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/people/{id}/payments")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PaymentController {
 
     private final ModelMapper modelMapper;
     private final PaymentServiceImpl paymentService;
+    private final PersonServiceImpl personService;
     private final PaymentValidator paymentValidator;
 
-    public PaymentController(ModelMapper modelMapper, PaymentServiceImpl paymentService, PaymentValidator paymentValidator) {
+    public PaymentController(ModelMapper modelMapper, PaymentServiceImpl paymentService, PersonServiceImpl personService, PaymentValidator paymentValidator) {
         this.modelMapper = modelMapper;
         this.paymentService = paymentService;
+        this.personService = personService;
         this.paymentValidator = paymentValidator;
     }
 
@@ -42,12 +48,21 @@ public class PaymentController {
         return new ResponseEntity<>(payments, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @GetMapping("/{paymentId}")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
+            , dataTypeClass = String.class, example = "Bearer XXX_access_token")
+    public ResponseEntity<PaymentDTO> getById(@PathVariable int id, @PathVariable int paymentId) {
+        return new ResponseEntity<>(modelMapper.map(paymentService.findById(paymentId).orElseThrow(() -> new EntityNotFoundException(paymentId)), PaymentDTO.class), HttpStatus.OK);
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
             , dataTypeClass = String.class, example = "Bearer XXX_access_token")
     public ResponseEntity<PaymentDTO> create(@PathVariable(value = "id") int personId,
                                              @RequestBody @Valid PaymentDTO payment, BindingResult bindingResult) {
+        payment.setOwner(modelMapper.map(personService.findById(personId).orElseThrow(() -> new EntityNotFoundException(personId)), PersonDTO.class));
         paymentValidator.validate(payment, bindingResult);
         if (bindingResult.hasErrors()) throw new EntityIsNotValidException(bindingResult, payment);
         return new ResponseEntity<>(modelMapper.map(paymentService
@@ -70,8 +85,8 @@ public class PaymentController {
     @DeleteMapping
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, paramType = "header"
             , dataTypeClass = String.class, example = "Bearer XXX_access_token")
-    public ResponseEntity<HttpStatus> delete(@PathVariable(value = "id") int ownerId, @RequestParam("paymentId") int id) {
-        if (!paymentService.delete(ownerId, id))
+    public ResponseEntity<HttpStatus> delete(@PathVariable(value = "id") int ownerId, @RequestParam("id") int id) {
+        if (!paymentService.delete(id))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(HttpStatus.OK);
 

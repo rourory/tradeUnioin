@@ -1,7 +1,7 @@
 package com.sts.tradeunion.util;
 
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
-import com.sts.tradeunion.exceptions.PersonNotFoundException;
+import com.sts.tradeunion.exceptions.EntityNotFoundException;
 import com.sts.tradeunion.util.validation.responce.EntityValidResponse;
 import com.sts.tradeunion.util.validation.responce.EntityValidViolation;
 import org.slf4j.Logger;
@@ -61,7 +61,7 @@ public class ExceptionHandlerAdvice {
                         String.join(", ", errorMessages));
             }
         }
-        return new ResponseEntity<>(new EntityValidResponse(violations), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new EntityValidResponse(violations), HttpStatus.OK);
 
     }
 
@@ -72,8 +72,8 @@ public class ExceptionHandlerAdvice {
      * @return ответ в виде строки с ошибкой и указанием id искомого объекта
      */
     @ExceptionHandler
-    private ResponseEntity<String> personNotFoundException(PersonNotFoundException notFoundException) {
-        logger.warn("Пользователь с id = {} не найден", notFoundException.getEntityId());
+    private ResponseEntity<String> personNotFoundException(EntityNotFoundException notFoundException) {
+        logger.warn("Сущность с id = {} не найдена", notFoundException.getEntityId());
         return new ResponseEntity<>("Пользователь с id = " + notFoundException.getEntityId() + " не найден"
                 , HttpStatus.NOT_FOUND);
     }

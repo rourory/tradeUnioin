@@ -15,6 +15,5 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity,Integer> 
 
     @Query(value = "SELECT created FROM doc_payment AS dp WHERE dp.id = ?1", nativeQuery = true)
     Date getCreatedDateById(int id);
-
-    boolean deleteByOwnerAndId(PersonEntity owner, int id);
+    boolean deleteByIdAndOwner(int id, PersonEntity owner);
 }

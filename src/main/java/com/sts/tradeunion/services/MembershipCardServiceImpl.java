@@ -1,7 +1,7 @@
 package com.sts.tradeunion.services;
 
 import com.sts.tradeunion.entities.MembershipCardEntity;
-import com.sts.tradeunion.exceptions.PersonNotFoundException;
+import com.sts.tradeunion.exceptions.EntityNotFoundException;
 import com.sts.tradeunion.repositories.MembershipCardRepository;
 import com.sts.tradeunion.repositories.PersonRepository;
 import com.sts.tradeunion.services.interfaces.WithOwnerService;
@@ -29,7 +29,7 @@ public class MembershipCardServiceImpl implements WithOwnerService<MembershipCar
 
     @Transactional
     public MembershipCardEntity save(MembershipCardEntity membershipCard, int ownerId) {
-        membershipCard.setOwner(personRepository.findById(ownerId).orElseThrow(() -> new PersonNotFoundException(ownerId)));
+        membershipCard.setOwner(personRepository.findById(ownerId).orElseThrow(() -> new EntityNotFoundException(ownerId)));
         membershipCard.setUpdated(LocalDateTime.now());
         membershipCard.setCreated(new Date());
         return membershipCardRepository.save(membershipCard);
@@ -37,14 +37,15 @@ public class MembershipCardServiceImpl implements WithOwnerService<MembershipCar
 
     @Transactional
     public MembershipCardEntity update(MembershipCardEntity membershipCard, int ownerId) {
-        membershipCard.setOwner(personRepository.findById(ownerId).orElseThrow(() -> new PersonNotFoundException(ownerId)));
+        membershipCard.setOwner(personRepository.findById(ownerId).orElseThrow(() -> new EntityNotFoundException(ownerId)));
         membershipCard.setUpdated(LocalDateTime.now());
         membershipCard.setCreated(membershipCardRepository.getCreatedDateById(membershipCard.getId()));
         return membershipCardRepository.save(membershipCard);
     }
     @Transactional
-    public boolean delete(int ownerId, int id) {
-        return membershipCardRepository.deleteByOwnerAndId(personRepository.findById(ownerId).orElseThrow(() -> new PersonNotFoundException(ownerId)),id);
+    public boolean delete(int id) {
+        membershipCardRepository.delete(membershipCardRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(id)));
+        return findById(id).isPresent();
     }
 
     public List<MembershipCardEntity> findByOwnerId(int ownerId) {

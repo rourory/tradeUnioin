@@ -17,8 +17,6 @@ import java.util.Date;
 @Data
 public class LaborContractDTO extends AbstractDTO {
 
-    private int id;
-
     @NotBlank(message = "Поле должно быть заполнено")
     @Pattern(regexp = ".{3,50}", message = "Поле должно состоять из 3-50 символов")
     private String place;

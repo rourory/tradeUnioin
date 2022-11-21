@@ -45,18 +45,19 @@ public class PersonServiceImpl implements WithoutOwnerService<PersonEntity> {
 
     @Transactional
     public boolean deleteById(int id) {
-        return personRepository.deleteById(id);
+        personRepository.deleteById(id);
+        return personRepository.findById(id).isEmpty();
     }
 
     public List<PersonEntity> getAll() {
         List<PersonEntity> people = new ArrayList<>();
-        personRepository.findAll().forEach(person -> {people.add(person);});
+        personRepository.findAll().forEach(people::add);
         return people;
     }
 
     public List<PersonsBasicInfo> getBasicInfoOfAllPeople() {
         List<PersonsBasicInfo> people = new ArrayList<>();
-       personBasicInfoRepository.findAll().forEach(person -> {people.add(person);});
+       personBasicInfoRepository.findAll().forEach(people::add);
         return people;
     }
     public boolean isExist(int personId) {

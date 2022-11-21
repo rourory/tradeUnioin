@@ -8,8 +8,6 @@ import javax.validation.constraints.Size;
 @Data
 public class UserDTO extends AbstractDTO{
 
-    private int id;
-
     @NotEmpty(message = "Поле должно быть не пустым")
     @Size(min = 4, max = 30, message = "Имя пользователя должно состоять из не менее 4 и не более 30 символов")
     private String username;

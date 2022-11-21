@@ -2,6 +2,8 @@ package com.sts.tradeunion.security.jwt;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.sts.tradeunion.services.UserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +29,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
     private final UserServiceImpl userService;
-
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     public JWTFilter(JWTUtil jwtUtil, UserServiceImpl userService) {
         this.jwtUtil = jwtUtil;
         this.userService = userService;
@@ -52,7 +54,7 @@ public class JWTFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader(Constants.HEADER_STRING);
+        String authHeader = request.getHeader(Constants.AUTHORIZATION);
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith(Constants.TOKEN_PREFIX)) {
             try {
                 Map<String, String> claims = jwtUtil.validateTokenAndRetrieveClaim(authHeader.substring(7));
@@ -64,7 +66,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
-                response.addHeader(Constants.HEADER_STRING, Constants.TOKEN_PREFIX + jwtUtil.generateToken(claims.get("username"),claims.get("role")));
+                response.addHeader(Constants.AUTHORIZATION, Constants.TOKEN_PREFIX + jwtUtil.generateToken(claims.get("username"),claims.get("role")));
                 response.addHeader("Access-Control-Expose-Headers", "Authorization");
             } catch (JWTVerificationException e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,"Ошибка в процессе расшифровки JWT");
@@ -73,7 +75,7 @@ public class JWTFilter extends OncePerRequestFilter {
             /* Код в блоке в данном блоке существует для тестирования работы со Swagger.
              Он позволяет создать имитацию авторизованного
              пользователя для доступа к схеме контроллеров. */
-
+                logger.warn("Данные, введенные пользователем, неверны");
             List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_NON_AUTHORIZED"));
             UserDetails userDetails = new User("api_user", "$2y$12$Y2MfMK7PcAchzL/oaVMk0ecUQEFV.mfwsCHmY6gqn2hpLH8BaZwcy", authorities);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,

@@ -14,11 +14,8 @@ import java.util.Date;
  * реализации интерфейса {@link org.springframework.validation.Validator}.
  * @see com.sts.tradeunion.util.validation.PersonValidator
  */
-//@Schema(description = "Сущность участника профсоюза")
 @Data
 public class PersonDTO extends AbstractDTO {
-
-    private int id;
 
     @NotBlank(message = "Поле должно быть заполнено")
     @Pattern(regexp = "(\\s?[а-яА-Я]{2,20}\\s?-?){1,3}", message = "Поле должно состоять из не менее двух и не более двадцати русских символов в одном слове")

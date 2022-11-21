@@ -1,7 +1,7 @@
 package com.sts.tradeunion.services;
 
 import com.sts.tradeunion.entities.LaborContractEntity;
-import com.sts.tradeunion.exceptions.PersonNotFoundException;
+import com.sts.tradeunion.exceptions.EntityNotFoundException;
 import com.sts.tradeunion.repositories.LaborContractRepository;
 import com.sts.tradeunion.repositories.PersonRepository;
 import com.sts.tradeunion.services.interfaces.WithOwnerService;
@@ -31,7 +31,7 @@ public class LaborContractServiceImpl implements WithOwnerService<LaborContractE
 
     @Transactional
     public LaborContractEntity save(LaborContractEntity laborContract, int ownerId) {
-        laborContract.setOwner(personRepository.findById(ownerId).orElseThrow(() -> new PersonNotFoundException(ownerId)));
+        laborContract.setOwner(personRepository.findById(ownerId).orElseThrow(() -> new EntityNotFoundException(ownerId)));
         laborContract.setUpdated(LocalDateTime.now());
         laborContract.setCreated(new Date());
         return laborContractRepository.save(laborContract);
@@ -39,17 +39,16 @@ public class LaborContractServiceImpl implements WithOwnerService<LaborContractE
 
     @Transactional
     public LaborContractEntity update(LaborContractEntity laborContract, int ownerId) {
-        laborContract.setOwner(personRepository.findById(ownerId).orElseThrow(() -> new PersonNotFoundException(ownerId)));
+        laborContract.setOwner(personRepository.findById(ownerId).orElseThrow(() -> new EntityNotFoundException(ownerId)));
         laborContract.setUpdated(LocalDateTime.now());
         laborContract.setCreated(laborContractRepository.getCreatedDateById(laborContract.getId()));
         return laborContractRepository.save(laborContract);
     }
 
     @Transactional
-    public boolean delete(int ownerId, int id) {
-        return laborContractRepository
-                .deleteByOwnerAndId(personRepository.findById(ownerId)
-                        .orElseThrow(() -> new PersonNotFoundException(ownerId)),id);
+    public boolean delete(int id) {
+        laborContractRepository.delete(findById(id).orElseThrow(() -> new EntityNotFoundException(id)));
+        return findById(id).isPresent();
     }
 
     public List<LaborContractEntity> findByOwnerId(int ownerId) {

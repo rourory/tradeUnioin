@@ -16,8 +16,6 @@ import java.util.Date;
 @Data
 public class MembershipCardDTO extends AbstractDTO{
 
-    private int id;
-
     @NotNull(message = "Поле должно быть заполнено")
     private int cardNumber;
 
