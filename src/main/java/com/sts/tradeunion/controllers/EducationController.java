@@ -20,7 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/education_states")
 public class EducationController {
- //some comment
     private final EducationServiceImpl educationService;
 
     private final ModelMapper modelMapper;
