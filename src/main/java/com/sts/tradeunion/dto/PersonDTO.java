@@ -37,7 +37,7 @@ public class PersonDTO extends AbstractDTO {
 
     private String address;
 
-    @Pattern(regexp = "\\+(375(17|29|33|44))-\\d{3}-\\d{2}-\\d{2}", message = "Мобильный телефон должен быть указан в международном формате (+375(код)-111-11-11)")
+    @Pattern(regexp = "(17|29|33|44)\\d{3}\\d{2}\\d{2}", message = "Мобильный телефон должен быть указан в международном формате (+375(код)1112233)")
     private String phone;
 
     private String birthPlace;

@@ -41,7 +41,7 @@ public class PersonValidator implements Validator {
             errors.rejectValue("regPlace", "", "Поле содержит недопустиные символы или не соответсвует шаблону");
         if (!person.getAddress().matches(getSomePersonsPlaceMatch()))
             errors.rejectValue("address", "", "Поле содержит недопустиные символы или не соответсвует шаблону");
-        if (!educationService.findByName(person.getEducation()).isPresent())
+        if (educationService.findByName(person.getEducation()).isEmpty())
             errors.rejectValue("education", "", "Поле не соответствует установленному шаблону");
     }
 

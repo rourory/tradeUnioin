@@ -61,7 +61,7 @@ public class ExceptionHandlerAdvice {
                         String.join(", ", errorMessages));
             }
         }
-        return new ResponseEntity<>(new EntityValidResponse(violations), HttpStatus.OK);
+        return new ResponseEntity<>(new EntityValidResponse(violations), HttpStatus.NON_AUTHORITATIVE_INFORMATION);
 
     }
 

@@ -55,8 +55,7 @@ public class UserDetailsImpl implements org.springframework.security.core.userde
 
     @Override
     public boolean isEnabled() {
-//        return true;
-        return user.isReliabilityDemonstration();
+        return true;
     }
 
     //Метод необходим для получения данных аутенфицированного пользователя

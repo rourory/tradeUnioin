@@ -1,17 +1,18 @@
 package com.sts.tradeunion.util.validation;
 
 import com.sts.tradeunion.dto.AuthenticationDTO;
+import com.sts.tradeunion.dto.RegistrationDTO;
 import com.sts.tradeunion.services.UserServiceImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 @Component
-public class AuthenticationDTOValidator implements Validator {
+public class RegistrationDTOValidator implements Validator {
 
     private final UserServiceImpl userService;
 
-    public AuthenticationDTOValidator(UserServiceImpl userService) {
+    public RegistrationDTOValidator(UserServiceImpl userService) {
         this.userService = userService;
     }
 
@@ -28,7 +29,7 @@ public class AuthenticationDTOValidator implements Validator {
      **/
     @Override
     public void validate(Object target, Errors errors) {
-        AuthenticationDTO authenticationDTO = (AuthenticationDTO) target;
+        RegistrationDTO authenticationDTO = (RegistrationDTO) target;
 
         if(userService.findByUsername(authenticationDTO.getUsername()).isPresent())
             errors.rejectValue("username","","Пользователь с таким именем уже существует");

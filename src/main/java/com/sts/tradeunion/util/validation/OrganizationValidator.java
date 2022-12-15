@@ -33,9 +33,7 @@ public class OrganizationValidator implements Validator {
      **/
     @Override
     public void validate(Object target, Errors errors) {
-
         TradeUnionClassificationDTO membershipCard = (TradeUnionClassificationDTO) target;
-
 
     }
 }

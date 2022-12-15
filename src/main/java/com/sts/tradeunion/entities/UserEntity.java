@@ -17,11 +17,14 @@ public class UserEntity extends AbstractEntity {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "firstname")
+    private String firstName;
+
+    @Column(name = "lastname")
+    private String lastName;
+
     @Column(name = "role")
     private String role;
-
-    @Column(name = "reliability_demonstration")
-    private boolean reliabilityDemonstration;
 
     @Column(name = "updated")
     private LocalDateTime updated;
@@ -30,7 +33,5 @@ public class UserEntity extends AbstractEntity {
     @Temporal(TemporalType.DATE)
     private Date created;
 
-    @Column(name = "secret_key")
-    private String secretKey;
 
 }
