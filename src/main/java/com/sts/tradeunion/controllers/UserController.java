@@ -5,6 +5,7 @@ import com.sts.tradeunion.dto.RegistrationDTO;
 import com.sts.tradeunion.dto.UserDTO;
 import com.sts.tradeunion.entities.UserEntity;
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
+import com.sts.tradeunion.exceptions.SuchUserHaveAlreadyExisted;
 import com.sts.tradeunion.security.jwt.JWTUtil;
 import com.sts.tradeunion.services.UserServiceImpl;
 import com.sts.tradeunion.util.validation.RegistrationDTOValidator;
@@ -46,10 +47,14 @@ public class UserController {
 
     @PostMapping("/registration")
     public ResponseEntity<UserDTO> performRegistration(@RequestBody @Valid RegistrationDTO user, BindingResult bindingResult) {
-        validator.validate(user, bindingResult);
         logger.info("Регистрация пользователя {}", user.getUsername());
+        if (userService.findByUsername(user.getUsername()).isPresent()){
+            throw new SuchUserHaveAlreadyExisted(user.getUsername());
+        }
+        validator.validate(user, bindingResult);
         if (bindingResult.hasErrors()){
-            throw new EntityIsNotValidException(bindingResult, user);}
+            throw new EntityIsNotValidException(bindingResult, user);
+        }
         logger.info("Регистрация пользователя {} произведена успешно", user.getUsername());
         return new ResponseEntity<>(modelMapper
                 .map(userService.register(modelMapper.map(user, UserEntity.class)), UserDTO.class), HttpStatus.OK);

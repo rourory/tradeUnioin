@@ -17,7 +17,7 @@ public class UserDTO extends AbstractDTO{
     private String role;
 
     @NotEmpty(message = "Поле должно быть не пустым")
-    @Size(min = 4, max = 30, message = "Имя  должно состоять из не менее 4 и не более 30 символов")
+    @Size(min = 4, max = 20, message = "Имя  должно состоять из не менее 4 и не более 20 символов")
     private String firstName;
 
     @NotEmpty(message = "Поле должно быть не пустым")

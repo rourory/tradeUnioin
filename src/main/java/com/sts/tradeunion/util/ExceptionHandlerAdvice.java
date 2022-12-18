@@ -2,6 +2,7 @@ package com.sts.tradeunion.util;
 
 import com.sts.tradeunion.exceptions.EntityIsNotValidException;
 import com.sts.tradeunion.exceptions.EntityNotFoundException;
+import com.sts.tradeunion.exceptions.SuchUserHaveAlreadyExisted;
 import com.sts.tradeunion.util.validation.responce.EntityValidResponse;
 import com.sts.tradeunion.util.validation.responce.EntityValidViolation;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -68,14 +70,20 @@ public class ExceptionHandlerAdvice {
     /**
      * Метод обрабатывает ошибку, возникающую в случае отсутствия в базе данных объекта класса {@link com.sts.tradeunion.entities.PersonEntity}
      * с указанным Id.
-     * @param notFoundException ошибка, выбрасываемая в случает остутствия пользователя в базе данных
+     * @param exception ошибка, выбрасываемая в случает остутствия пользователя в базе данных
      * @return ответ в виде строки с ошибкой и указанием id искомого объекта
      */
     @ExceptionHandler
-    private ResponseEntity<String> personNotFoundException(EntityNotFoundException notFoundException) {
-        logger.warn("Сущность с id = {} не найдена", notFoundException.getEntityId());
-        return new ResponseEntity<>("Пользователь с id = " + notFoundException.getEntityId() + " не найден"
+    private ResponseEntity<Map<String,String>> personNotFoundException(EntityNotFoundException exception) {
+        logger.warn("Сущность с id = {} не найдена", exception.getEntityId());
+        return new ResponseEntity<>(Map.of("message", "Пользователь с id = " + exception.getEntityId() + " не найден")
                 , HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler
+    private ResponseEntity<Map<String,String>> suchUserHaveAlreadyExisted(SuchUserHaveAlreadyExisted exception) {
+        logger.warn("Пользователь с именем = {} уже существует", exception.getUsername());
+        return new ResponseEntity<>(Map.of("message", "Пользователь с именем " + exception.getUsername() + " уже существует")
+                , HttpStatus.ALREADY_REPORTED);
+    }
 }
