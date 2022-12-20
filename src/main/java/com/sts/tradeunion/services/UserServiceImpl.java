@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -54,6 +55,9 @@ public class UserServiceImpl implements UserDetailsService {
         return userRepository.findById(id);
     }
 
+    public List<UserEntity> getAll(){
+        return userRepository.findAll();
+    }
     public Optional<UserEntity> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -69,7 +73,6 @@ public class UserServiceImpl implements UserDetailsService {
 
     @Transactional
     public UserEntity update(UserEntity user) {
-        user.setUpdated(LocalDateTime.now());
         return userRepository.save(user);
     }
 

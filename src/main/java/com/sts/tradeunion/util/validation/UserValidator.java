@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.Optional;
+
 @Component
 public class UserValidator implements Validator {
 
@@ -31,6 +33,5 @@ public class UserValidator implements Validator {
         UserDTO user = (UserDTO) target;
         if (userService.findByUsername(user.getUsername()).isPresent())
             errors.rejectValue("username","","Пользователь с таким именем уже существует");
-
     }
 }

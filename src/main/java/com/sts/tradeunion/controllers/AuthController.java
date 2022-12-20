@@ -1,5 +1,6 @@
 package com.sts.tradeunion.controllers;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.sts.tradeunion.dto.AuthenticationDTO;
 import com.sts.tradeunion.dto.RegistrationDTO;
 import com.sts.tradeunion.dto.UserDTO;
@@ -26,7 +27,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-public class UserController {
+public class AuthController {
 
     private final RegistrationDTOValidator validator;
     private final UserServiceImpl userService;
@@ -36,7 +37,7 @@ public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public UserController(RegistrationDTOValidator validator, UserServiceImpl userService, ModelMapper modelMapper,
+    public AuthController(RegistrationDTOValidator validator, UserServiceImpl userService, ModelMapper modelMapper,
                           JWTUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.validator = validator;
         this.userService = userService;
@@ -61,7 +62,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Map<String,Object> performLogin(@RequestBody AuthenticationDTO user) {
+    public ResponseEntity<Map<String,Object>> performLogin(@RequestBody AuthenticationDTO user) {
         UserDetails userDetails;
         UsernamePasswordAuthenticationToken authenticationInputToken =
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
@@ -71,17 +72,30 @@ public class UserController {
             userDetails = userService.loadUserByUsername(user.getUsername());
         } catch (BadCredentialsException e) {
             logger.info("Пользователь {} ввел некорректные данные", user.getUsername());
-            return Map.of("message", "Неверные данные пользователя");
+            return new ResponseEntity<>(Map.of("message", "Неверные данные пользователя"),HttpStatus.ALREADY_REPORTED);
         }
         String token = jwtUtil.generateToken(user.getUsername(),
                 userDetails.getAuthorities().stream().findFirst().orElseThrow().getAuthority());
         logger.info("Аутентификация пользователя {} произведена успешно", userDetails.getUsername());
 
-        return Map.of(
+        return new ResponseEntity<>(Map.of(
                 "user",
                 modelMapper.map(userService.findByUsername(userDetails.getUsername()).get(),UserDTO.class),
                 "jwt_token",
-                "Bearer " + token);
+                "Bearer " + token),HttpStatus.OK);
     }
 
+    @PostMapping("/login_with_token")
+    public ResponseEntity<Map<String,Object>> performLoginWithToken(@RequestBody String token) {
+        try {
+            Map<String,String> parsedToken = jwtUtil.validateTokenAndRetrieveClaim(token);
+            return new ResponseEntity<>(Map.of(
+                    "user",
+                    modelMapper.map(userService.findByUsername(parsedToken.get("username")).get(),UserDTO.class),
+                    "jwt_token",
+                    "Bearer " + token),HttpStatus.OK);
+        } catch(JWTVerificationException exception){
+            return new ResponseEntity<>(Map.of("message", "Невалидный токен"),HttpStatus.FORBIDDEN);
+        }
+    }
 }
