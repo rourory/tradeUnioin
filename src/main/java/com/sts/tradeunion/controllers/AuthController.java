@@ -23,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.Map;
 
 @RestController
@@ -68,8 +69,8 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
         try {
             logger.info("Аутентификация пользователя {}", user.getUsername());
-            authenticationManager.authenticate(authenticationInputToken);
-            userDetails = userService.loadUserByUsername(user.getUsername());
+                authenticationManager.authenticate(authenticationInputToken);
+                        userDetails = userService.loadUserByUsername(user.getUsername());
         } catch (BadCredentialsException e) {
             logger.info("Пользователь {} ввел некорректные данные", user.getUsername());
             return new ResponseEntity<>(Map.of("message", "Неверные данные пользователя"),HttpStatus.ALREADY_REPORTED);

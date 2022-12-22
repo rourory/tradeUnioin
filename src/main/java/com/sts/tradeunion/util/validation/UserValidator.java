@@ -1,6 +1,7 @@
 package com.sts.tradeunion.util.validation;
 
 import com.sts.tradeunion.dto.UserDTO;
+import com.sts.tradeunion.entities.UserEntity;
 import com.sts.tradeunion.services.UserServiceImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -30,8 +31,8 @@ public class UserValidator implements Validator {
      **/
     @Override
     public void validate(Object target, Errors errors) {
-        UserDTO user = (UserDTO) target;
-        if (userService.findByUsername(user.getUsername()).isPresent())
-            errors.rejectValue("username","","Пользователь с таким именем уже существует");
+        UserEntity user = (UserEntity) target;
+//        if (userService.findByUsername(user.getUsername()).isPresent())
+//            errors.rejectValue("username","","Пользователь с таким именем уже существует");
     }
 }

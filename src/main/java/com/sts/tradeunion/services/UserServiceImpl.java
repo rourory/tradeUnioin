@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -55,9 +56,10 @@ public class UserServiceImpl implements UserDetailsService {
         return userRepository.findById(id);
     }
 
-    public List<UserEntity> getAll(){
+    public List<UserEntity> getAll() {
         return userRepository.findAll();
     }
+
     public Optional<UserEntity> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }

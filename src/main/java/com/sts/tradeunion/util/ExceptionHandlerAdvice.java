@@ -5,6 +5,8 @@ import com.sts.tradeunion.exceptions.EntityNotFoundException;
 import com.sts.tradeunion.exceptions.SuchUserHaveAlreadyExisted;
 import com.sts.tradeunion.util.validation.responce.EntityValidResponse;
 import com.sts.tradeunion.util.validation.responce.EntityValidViolation;
+import org.hibernate.exception.JDBCConnectionException;
+import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -12,10 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.net.ConnectException;
+import java.sql.SQLException;
+import java.util.*;
 
 
 /**
@@ -59,7 +60,7 @@ public class ExceptionHandlerAdvice {
                 violations.add(new EntityValidViolation(fieldName, errorMessages));
                 logger.warn("Поле: {}. Введенное значение: {}. Ошибки: {}. ",
                         fieldName,
-                        validException.getBindingResult().getFieldErrors(fieldName).get(0).getRejectedValue().toString(),
+                        Objects.requireNonNull(validException.getBindingResult().getFieldErrors(fieldName).get(0).getRejectedValue()).toString(),
                         String.join(", ", errorMessages));
             }
         }
@@ -84,6 +85,19 @@ public class ExceptionHandlerAdvice {
     private ResponseEntity<Map<String,String>> suchUserHaveAlreadyExisted(SuchUserHaveAlreadyExisted exception) {
         logger.warn("Пользователь с именем = {} уже существует", exception.getUsername());
         return new ResponseEntity<>(Map.of("message", "Пользователь с именем " + exception.getUsername() + " уже существует")
+                , HttpStatus.ALREADY_REPORTED);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<Map<String,String>> databaseConnectionError(Throwable exception) {
+        Throwable rootCause = com.google.common.base.Throwables.getRootCause(exception);
+        if (rootCause instanceof ConnectException) {
+            logger.warn("Ошибка соединения с базой данных", exception);
+            return new ResponseEntity<>(Map.of("message", "Ошибка соединения с базой данных (" +exception.getMessage()+ ")")
+                    , HttpStatus.ALREADY_REPORTED);
+        }
+        logger.warn("Неизвестная ошибка", exception);
+        return new ResponseEntity<>(Map.of("message", "Ошибка (" +exception.getMessage()+ ")")
                 , HttpStatus.ALREADY_REPORTED);
     }
 }
