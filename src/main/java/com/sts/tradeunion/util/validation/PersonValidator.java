@@ -32,17 +32,18 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         PersonDTO person = (PersonDTO) target;
-
-        if (!person.getBirthPlace().matches(getSomePersonsPlaceMatch()))
+        if (person.getBirthPlace() != null && !person.getBirthPlace().matches(getSomePersonsPlaceMatch()))
             errors.rejectValue("birthPlace", "", "Поле содержит недопустиные символы или не соответсвует шаблону");
-        if (!person.getLivePlace().matches(getSomePersonsPlaceMatch()))
+        if (person.getLivePlace() != null && !person.getLivePlace().matches(getSomePersonsPlaceMatch()))
             errors.rejectValue("livePlace", "", "Поле содержит недопустиные символы или не соответсвует шаблону");
-        if (!person.getRegPlace().matches(getSomePersonsPlaceMatch()))
+        if (person.getRegPlace() != null && !person.getRegPlace().matches(getSomePersonsPlaceMatch()))
             errors.rejectValue("regPlace", "", "Поле содержит недопустиные символы или не соответсвует шаблону");
-        if (!person.getAddress().matches(getSomePersonsPlaceMatch()))
+        if (person.getAddress() != null &&!person.getAddress().matches(getSomePersonsPlaceMatch()))
             errors.rejectValue("address", "", "Поле содержит недопустиные символы или не соответсвует шаблону");
-        if (educationService.findByName(person.getEducation()).isEmpty())
-            errors.rejectValue("education", "", "Поле не соответствует установленному шаблону");
+        if( person.getEducation() != null){
+            if (educationService.findByName(person.getEducation()).isEmpty())
+                errors.rejectValue("education", "", "Поле не соответствует установленному шаблону");
+        }
     }
 
     /**
@@ -58,12 +59,13 @@ public class PersonValidator implements Validator {
      * @return Шаблон физического адреса в виде символьной строки.
      **/
     private String getSomePersonsPlaceMatch() {
-        String orEmptyStart = "(";
-        String town = "([а-я\\.]{1,4})\\.\\s?([а-яА-Я-]{1,15}\\s?){1,3},\\s?";
-        String street = "(((ул)|(\\d{0,2}\\s?-?\\s?[оиыйая]{0,3}\\s?(пер)))|(пр))\\.(\\s?[\\dа-яА-Я-]{1,15}){1,4}\\s?";
-        String houseNumber = "((,\\s?(д)\\.)|-|,)\\s?\\d{1,4}\\s?-?\\s?([а-я\\d]?)\\.?";
-        String quarterNumberIfExists = "((((,\\s?((кв|к)\\.)?)|\\s?(-))\\s?\\d{1,4}([а-я]?))|\\w{0})";
-        String orEmptyEnd = ")|\\w{0}";
-        return orEmptyStart + town + street + houseNumber + quarterNumberIfExists + orEmptyEnd;
+//        String orEmptyStart = "(";
+//        String town = "([а-я\\.]{1,4})\\.\\s?([а-яА-Я-]{1,15}\\s?){1,3},\\s?";
+//        String street = "(((ул)|(\\d{0,2}\\s?-?\\s?[оиыйая]{0,3}\\s?(пер)))|(пр))\\.(\\s?[\\dа-яА-Я-]{1,15}){1,4}\\s?";
+//        String houseNumber = "((,\\s?(д)\\.)|-|,)\\s?\\d{1,4}\\s?-?\\s?([а-я\\d]?)\\.?";
+//        String quarterNumberIfExists = "((((,\\s?((кв|к)\\.)?)|\\s?(-))\\s?\\d{1,4}([а-я]?))|\\w{0})";
+//        String orEmptyEnd = ")?";
+//        return orEmptyStart + town + street + houseNumber + quarterNumberIfExists + orEmptyEnd;
+        return "[А-Яа-я-\\.\\d\\s,]{1,50}";
     }
 }

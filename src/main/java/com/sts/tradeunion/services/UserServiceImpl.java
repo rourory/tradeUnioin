@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserDetailsService {
 
     @Transactional
     public UserEntity update(UserEntity user) {
+        user.setUpdated(LocalDateTime.now());
         return userRepository.save(user);
     }
 
